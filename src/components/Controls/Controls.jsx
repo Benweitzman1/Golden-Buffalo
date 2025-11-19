@@ -30,12 +30,12 @@ export const Controls = ({ gameLogic }) => {
 
     const canCashOut = gameStatus === "playing" && score > 0;
     const canRestart = !isLoading && gameStatus !== "loading";
-    const canSelectCoin = gameStatus === "ready" || (gameStatus !== "playing" && gameStatus !== "loading");
+    const canSelectCoin = gameStatus === "ready";
 
     return (
         <div className="controls">
             <div className="controls__coin-selector">
-                <div className="controls__coin-label">Select Coin Type:</div>
+                <div className="controls__coin-label">{canSelectCoin ? "Select Coin Type:" : `Coin Type: ${coinType} (Locked)`}</div>
                 <div className="controls__coins">
                     <button
                         type="button"

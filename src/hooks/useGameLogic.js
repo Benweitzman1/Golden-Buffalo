@@ -93,7 +93,7 @@ export const useGameLogic = () => {
 
     const selectCoinType = useCallback(
         (type) => {
-            if (gameStatus !== "playing") {
+            if (gameStatus === "ready") {
                 setCoinType(type);
             }
         },
