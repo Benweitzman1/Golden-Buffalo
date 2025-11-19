@@ -6,7 +6,7 @@ export const Board = ({ gameLogic }) => {
 
     const GRID_SIZE = 3;
 
-    const isDisabled = isLoading || gameStatus !== "playing";
+    const isDisabled = isLoading || (gameStatus !== "playing" && gameStatus !== "ready");
 
     const gridLayout = [];
     for (let row = 0; row < GRID_SIZE; row++) {

@@ -5,12 +5,15 @@ import "./Controls.css";
  * Displays score and game status information
  */
 export const Controls = ({ gameLogic }) => {
+    const { score, gameStatus, isLoading, safeCellsRemaining, totalMines, coinType, selectCoinType, cashOut, restart } = gameLogic;
     const { score, gameStatus, isLoading, safeCellsRemaining, totalMines, cashOut, restart } = gameLogic;
 
     const getStatusMessage = () => {
         switch (gameStatus) {
             case "loading":
                 return "Loading game...";
+            case "ready":
+                return "Select your coin type and pick a card to start!";
             case "playing":
                 return "Pick a card to reveal rewards. Avoid the mines!";
             case "won":
@@ -26,13 +29,40 @@ export const Controls = ({ gameLogic }) => {
 
     const canCashOut = gameStatus === "playing" && score > 0;
     const canRestart = !isLoading && gameStatus !== "loading";
+    const canSelectCoin = gameStatus === "ready" || (gameStatus !== "playing" && gameStatus !== "loading");
 
     return (
         <div className="controls">
+            <div className="controls__coin-selector">
+                <div className="controls__coin-label">Select Coin Type:</div>
+                <div className="controls__coins">
+                    <button
+                        type="button"
+                        className={`controls__coin-btn controls__coin-btn--s ${coinType === "S" ? "controls__coin-btn--selected" : ""}`}
+                        onClick={() => selectCoinType("S")}
+                        disabled={!canSelectCoin}
+                        aria-label="Select Coin S"
+                    >
+                        <span className="controls__coin-icon controls__coin-icon--s">S</span>
+                        <span className="controls__coin-name">Coin S</span>
+                    </button>
+                    <button
+                        type="button"
+                        className={`controls__coin-btn controls__coin-btn--c ${coinType === "C" ? "controls__coin-btn--selected" : ""}`}
+                        onClick={() => selectCoinType("C")}
+                        disabled={!canSelectCoin}
+                        aria-label="Select Coin C"
+                    >
+                        <span className="controls__coin-icon controls__coin-icon--c">C</span>
+                        <span className="controls__coin-name">Coin C</span>
+                    </button>
+                </div>
+            </div>
+
             <div className="controls__info">
                 <div className="controls__score">
-                    <span className="controls__label">Coins:</span>
-                    <span className="controls__value">${score}</span>
+                    <span className="controls__label">Coins ({coinType}):</span>
+                    <span className={`controls__value controls__value--${coinType.toLowerCase()} ${score !== animatedScore ? "controls__value--animating" : ""}`}>${animatedScore}</span>
                 </div>
                 <div className="controls__stats">
                     <span>Safe cards: {safeCellsRemaining}</span>
