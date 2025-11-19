@@ -1,0 +1,17 @@
+#root {
+    min-height: 100vh;
+}
+
+.app-shell {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.placeholder-grid {
+    display: grid;
+    gap: 1rem;
+}
