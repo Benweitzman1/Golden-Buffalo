@@ -1,3 +1,4 @@
+import { useCounter } from "../../hooks/useCounter";
 import "./Controls.css";
 
 /**
@@ -6,7 +7,7 @@ import "./Controls.css";
  */
 export const Controls = ({ gameLogic }) => {
     const { score, gameStatus, isLoading, safeCellsRemaining, totalMines, coinType, selectCoinType, cashOut, restart } = gameLogic;
-    const { score, gameStatus, isLoading, safeCellsRemaining, totalMines, cashOut, restart } = gameLogic;
+    const animatedScore = useCounter(score, 400);
 
     const getStatusMessage = () => {
         switch (gameStatus) {
