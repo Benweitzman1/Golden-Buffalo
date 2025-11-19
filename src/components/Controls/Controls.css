@@ -1,0 +1,125 @@
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: #f9fafb;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+.controls__info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.controls__score {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 8px;
+  color: white;
+}
+
+.controls__label {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.controls__value {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.controls__stats {
+  display: flex;
+  justify-content: space-around;
+  font-size: 0.95rem;
+  color: #666;
+  padding: 0.5rem;
+}
+
+.controls__status {
+  text-align: center;
+}
+
+.controls__message {
+  font-size: 1rem;
+  color: #333;
+  margin: 0;
+  padding: 0.75rem;
+  background: white;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+}
+
+.controls__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.controls__btn {
+  padding: 0.875rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.controls__btn--cashout {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+}
+
+.controls__btn--cashout:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(245, 87, 108, 0.4);
+}
+
+.controls__btn--restart {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: white;
+}
+
+.controls__btn--restart:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(79, 172, 254, 0.4);
+}
+
+.controls__btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.controls__btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+@media (max-width: 480px) {
+  .controls {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .controls__value {
+    font-size: 1.5rem;
+  }
+
+  .controls__actions {
+    grid-template-columns: 1fr;
+  }
+
+  .controls__btn {
+    width: 100%;
+  }
+}
+

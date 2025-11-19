@@ -1,0 +1,35 @@
+.board {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.board__row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.board--loading,
+.board--error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 480px) {
+  .board {
+    gap: 0.5rem;
+  }
+
+  .board__row {
+    gap: 0.5rem;
+  }
+}
+

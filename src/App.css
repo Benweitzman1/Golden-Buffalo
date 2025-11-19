@@ -1,17 +1,48 @@
 #root {
     min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 .app-shell {
-    max-width: 720px;
+    max-width: 600px;
     margin: 0 auto;
     padding: 2rem 1.5rem;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 2rem;
+    min-height: 100vh;
 }
 
-.placeholder-grid {
-    display: grid;
-    gap: 1rem;
+.app-header {
+    text-align: center;
+    color: white;
+    padding: 1rem 0;
+}
+
+.app-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin: 0 0 0.5rem 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.app-subtitle {
+    font-size: 1.1rem;
+    margin: 0;
+    opacity: 0.9;
+}
+
+@media (max-width: 480px) {
+    .app-shell {
+        padding: 1.5rem 1rem;
+        gap: 1.5rem;
+    }
+
+    .app-title {
+        font-size: 2rem;
+    }
+
+    .app-subtitle {
+        font-size: 1rem;
+    }
 }
