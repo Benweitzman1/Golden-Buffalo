@@ -1,0 +1,191 @@
+/* Toggle Container - Wraps toggle switch */
+.toggle-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    max-width: 120px;
+    margin: 0 auto;
+    padding: 0;
+}
+
+/* Toggle Switch Button */
+.toggle-switch {
+    position: relative;
+    width: 100%;
+    max-width: 100px;
+    height: 56px;
+    padding: 0;
+    border: 2px solid #3d2507;
+    border-radius: 28px;
+    background: #5d390b;
+    cursor: pointer;
+    overflow: hidden;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.toggle-switch:focus,
+.toggle-switch:focus-visible,
+.toggle-switch:active {
+    outline: none;
+}
+
+.toggle-switch:hover:not(.toggle-switch--disabled) {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
+    border-color: #4a2e08;
+}
+
+.toggle-switch:active:not(.toggle-switch--disabled) {
+    transform: scale(0.98);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-switch--disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Toggle Track - Inner container */
+.toggle-track {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 26px;
+    overflow: hidden;
+}
+
+/* Active Side Background - Golden for C, Green for S */
+.toggle-active-side {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1;
+}
+
+.toggle-active-side--c {
+    background: transparent;
+    left: 0;
+    border-radius: 24px 0 0 24px;
+}
+
+.toggle-active-side--s {
+    background: transparent;
+    left: 50%;
+    border-radius: 0 24px 24px 0;
+}
+
+/* Inactive Side - Solid brown fill (no gradients, no shadows) */
+.toggle-switch--c .toggle-track::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    /* background: #5d390b; */
+    transition: all 0.3s ease;
+    z-index: 0;
+    border-radius: 0 24px 24px 0;
+}
+
+.toggle-switch--s .toggle-track::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: #5d390b;
+    transition: all 0.3s ease;
+    z-index: 0;
+    border-radius: 24px 0 0 24px;
+}
+
+/* Coin Icon Container - Slides between positions with 8px padding */
+.toggle-coin-container {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 2;
+}
+
+.toggle-coin-container--c {
+    left: 8px;
+}
+
+.toggle-coin-container--s {
+    left: calc(100% - 56px);
+}
+
+.toggle-coin-container--animating {
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Coin Icon Image */
+.toggle-coin-icon {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+    transition: opacity 0.25s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.toggle-coin-icon--visible {
+    opacity: 1;
+    transform: scale(1);
+    z-index: 2;
+}
+
+.toggle-coin-icon--hidden {
+    opacity: 0;
+    transform: scale(0.85);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Fallback text if images don't load */
+.toggle-coin-fallback {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    z-index: 3;
+    transition: opacity 0.25s ease;
+}
+
+.toggle-coin-fallback--visible {
+    display: flex;
+    opacity: 1;
+}
+
+.toggle-coin-fallback--c {
+    background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+}
+
+.toggle-coin-fallback--s {
+    background: linear-gradient(135deg, #10b981 0%, #047857 100%);
+}
+
+/* Responsive Design */
+/* Removed responsive breakpoints - toggle maintains PC size on all devices */

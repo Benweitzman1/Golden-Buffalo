@@ -34,7 +34,7 @@ export const Card = ({ card, isRevealed, isTriggeredMine, onFlip, disabled }) =>
         if (disabled) {
             className += " card--disabled";
         }
-        console.warn("className", className);
+        // console.warn("className", className);
         return className;
     };
 

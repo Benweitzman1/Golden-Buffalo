@@ -30,6 +30,46 @@
     gap: clamp(0.5rem, 1vw, 0.75rem);
 }
 
+.controls__toggle-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: clamp(0.5rem, 1vh, 0.75rem) 0;
+    position: relative;
+    min-height: 80px; /* Space for crown above toggle */
+}
+
+/* Crown Wrapper - Positioned above selected coin */
+.controls__crown-wrapper {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+}
+
+/* Crown positioned above Coin C (left side) - Desktop: toggle 100px, coin C center at 32px from left */
+.controls__crown-wrapper[data-coin-type="C"] {
+    left: calc(50% - 50px + 32px); /* Center - half toggle width (50px) + coin C center (32px) */
+}
+
+/* Crown positioned above Coin S (right side) - Desktop: toggle 100px, coin S center at 68px from left (100px - 56px + 24px) */
+.controls__crown-wrapper[data-coin-type="S"] {
+    left: calc(50% - 50px + 68px); /* Center - half toggle width (50px) + coin S center (68px) */
+}
+
+.controls__crown-icon {
+    width: 32px;
+    height: 20px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    pointer-events: none;
+}
+
+/* Removed responsive crown positioning - maintains PC size on all devices */
+
 .controls__coin-btn {
     display: flex;
     flex-direction: row;

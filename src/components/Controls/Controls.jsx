@@ -1,4 +1,5 @@
 import { useCounter } from "../../hooks/useCounter";
+import { Toggle } from "../Toggle/Toggle";
 import "./Controls.css";
 
 /**
@@ -37,27 +38,18 @@ export const Controls = ({ gameLogic, section = "top" }) => {
             <>
                 <div className="controls__coin-selector">
                     <div className="controls__coin-label">{canSelectCoin ? "Select Coin Type:" : `Coin Type: ${coinType} (Locked)`}</div>
-                    <div className="controls__coins">
-                        <button
-                            type="button"
-                            className={`controls__coin-btn controls__coin-btn--s ${coinType === "S" ? "controls__coin-btn--selected" : ""}`}
-                            onClick={() => selectCoinType("S")}
-                            disabled={!canSelectCoin}
-                            aria-label="Select Coin S"
-                        >
-                            <span className="controls__coin-icon controls__coin-icon--s">S</span>
-                            <span className="controls__coin-name">Coin S</span>
-                        </button>
-                        <button
-                            type="button"
-                            className={`controls__coin-btn controls__coin-btn--c ${coinType === "C" ? "controls__coin-btn--selected" : ""}`}
-                            onClick={() => selectCoinType("C")}
-                            disabled={!canSelectCoin}
-                            aria-label="Select Coin C"
-                        >
-                            <span className="controls__coin-icon controls__coin-icon--c">C</span>
-                            <span className="controls__coin-name">Coin C</span>
-                        </button>
+                    <div className="controls__toggle-wrapper">
+                        <div className="controls__crown-wrapper" data-coin-type={coinType}>
+                            <img
+                                src="/crown.png"
+                                alt="Crown"
+                                className="controls__crown-icon"
+                                onError={(e) => {
+                                    e.target.style.display = "none";
+                                }}
+                            />
+                        </div>
+                        <Toggle value={coinType} onChange={selectCoinType} disabled={!canSelectCoin} coinCImage="/coinC.png" coinSImage="/coinS.png" />
                     </div>
                 </div>
 
