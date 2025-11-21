@@ -1,5 +1,6 @@
 import "./App.css";
 import { Board } from "./components/Board/Board";
+import { BuffaloAnimation } from "./components/BuffaloAnimation/BuffaloAnimation";
 import { Controls } from "./components/Controls/Controls";
 import { useBoardSize } from "./hooks/useBoardSize";
 import { useGameLogic } from "./hooks/useGameLogic";
@@ -31,6 +32,15 @@ const App = () => {
                     <Controls gameLogic={gameLogic} section="bottom" />
                 </div>
             </div>
+
+            {gameLogic.pendingRewards?.map((pendingReward) => (
+                <BuffaloAnimation
+                    key={pendingReward.cardId}
+                    cardId={pendingReward.cardId}
+                    targetSelector="[data-score-target='true']"
+                    onComplete={() => gameLogic.completeRewardAnimation(pendingReward.cardId)}
+                />
+            ))}
         </main>
     );
 };

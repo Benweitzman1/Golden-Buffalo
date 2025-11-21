@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import "./Card.css";
 
 /**
@@ -5,6 +6,23 @@ import "./Card.css";
  * Handles flip animations and visual states
  */
 export const Card = ({ card, isRevealed, isTriggeredMine, onFlip, disabled }) => {
+    const [showBuffalo, setShowBuffalo] = useState(false);
+    const [isDimmed, setIsDimmed] = useState(false);
+
+    useEffect(() => {
+        if (isRevealed && !card.hasMine) {
+            setShowBuffalo(true);
+            const revertTimer = setTimeout(() => setShowBuffalo(false), 1000);
+            const dimTimer = setTimeout(() => setIsDimmed(true), 1000);
+            return () => {
+                clearTimeout(revertTimer);
+                clearTimeout(dimTimer);
+            };
+        } else {
+            setShowBuffalo(false);
+            setIsDimmed(false);
+        }
+    }, [isRevealed, card.hasMine]);
     const handleClick = () => {
         if (!disabled && !isRevealed) {
             onFlip(card.id);
@@ -13,18 +31,25 @@ export const Card = ({ card, isRevealed, isTriggeredMine, onFlip, disabled }) =>
 
     const getCardContent = () => {
         if (!isRevealed) {
-            return "?";
+            return;
         }
         if (card.hasMine) {
             return "💣";
         }
-        return `+$${card.reward}`;
+        return ` ${card.reward}`;
     };
 
     const getCardClassName = () => {
         let className = "card";
         if (isRevealed) {
-            className += card.hasMine ? " card--mine" : " card--safe";
+            if (card.hasMine) {
+                className += " card--mine";
+            } else {
+                className += showBuffalo ? " card--safe" : " card--safe-reverted";
+                if (isDimmed) {
+                    className += " card--dimmed";
+                }
+            }
             if (isTriggeredMine) {
                 className += " card--triggered";
             }
@@ -34,7 +59,6 @@ export const Card = ({ card, isRevealed, isTriggeredMine, onFlip, disabled }) =>
         if (disabled) {
             className += " card--disabled";
         }
-        // console.warn("className", className);
         return className;
     };
 
@@ -45,7 +69,10 @@ export const Card = ({ card, isRevealed, isTriggeredMine, onFlip, disabled }) =>
             onClick={handleClick}
             disabled={disabled || isRevealed}
             aria-label={isRevealed ? (card.hasMine ? "Mine" : `Reward ${card.reward} coins`) : "Hidden card"}
+            data-card-id={card.id}
+            style={isRevealed ? { pointerEvents: "none" } : {}}
         >
+            {/* <span className="card__content"></span> */}
             <span className="card__content">{getCardContent()}</span>
         </button>
     );

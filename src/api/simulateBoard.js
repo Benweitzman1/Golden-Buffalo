@@ -3,7 +3,7 @@
  * Returns a board with at least one mine and reward amounts per safe cell
  */
 export const simulateBoard = async () => {
-    // Simulate network latency
+    // Simulate api call
     await new Promise((resolve) => setTimeout(resolve, 500));
 
     const gridSize = 3;
@@ -13,7 +13,6 @@ export const simulateBoard = async () => {
 
     const amountPerWin = Math.floor(Math.random() * 91) + 10; // 10–100 reward
 
-    // generate all cell positions
     const positions = [];
     for (let row = 0; row < gridSize; row++) {
         for (let col = 0; col < gridSize; col++) {
@@ -21,7 +20,6 @@ export const simulateBoard = async () => {
         }
     }
 
-    // Randomly select mine positions
     const minePositions = [];
     const availablePositions = [...positions];
     for (let i = 0; i < mineCount; i++) {
@@ -30,7 +28,6 @@ export const simulateBoard = async () => {
         availablePositions.splice(randomIndex, 1);
     }
 
-    // build cells
     const cells = positions.map((pos) => {
         const isMine = minePositions.some((mine) => mine.id === pos.id);
         return {
@@ -44,5 +41,6 @@ export const simulateBoard = async () => {
 
     return {
         cells,
+        amountPerWin,
     };
 };

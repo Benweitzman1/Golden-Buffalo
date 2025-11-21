@@ -16,7 +16,10 @@
 }
 
 .card--hidden {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-image: url("/card.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     color: white;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -31,10 +34,32 @@
 }
 
 .card--safe {
-    background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
-    color: #1a1a1a;
-    border-color: #4ade80;
+    background-image: url("/card_buffalo.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     animation: flipReveal 0.4s ease;
+    cursor: default;
+    pointer-events: none;
+}
+
+.card--safe-reverted {
+    background-image: url("/card.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: default;
+    pointer-events: none;
+}
+
+.card--safe-reverted.card--dimmed {
+    opacity: 0.5;
+    filter: brightness(0.6);
+    transition: opacity 0.3s ease, filter 0.3s ease;
 }
 
 .card--mine {
@@ -42,6 +67,8 @@
     color: white;
     border-color: #ef4444;
     animation: flipReveal 0.4s ease;
+    cursor: default;
+    pointer-events: none;
 }
 
 .card--triggered {
@@ -96,11 +123,11 @@
     }
 }
 
-/* Desktop - Larger cards (50%+ increase) */
+/* Desktop - Larger cards */
 @media (min-width: 769px) {
     .card {
-        font-size: 2.25rem; /* 50% larger than 1.5rem (1.5 * 1.5 = 2.25) */
-        min-height: 120px; /* 50% larger than 80px (80 * 1.5 = 120) */
+        font-size: 2.25rem;
+        min-height: 120px;
         border-width: 3px;
         border-radius: 12px;
     }

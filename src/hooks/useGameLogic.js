@@ -15,6 +15,8 @@ export const useGameLogic = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [triggeredMineId, setTriggeredMineId] = useState(null);
     const [coinType, setCoinType] = useState("S");
+    const [amountPerWin, setAmountPerWin] = useState(0);
+    const [pendingRewards, setPendingRewards] = useState([]);
 
     const loadBoard = useCallback(async () => {
         setIsLoading(true);
@@ -22,10 +24,12 @@ export const useGameLogic = () => {
         setRevealedIds([]);
         setScore(0);
         setTriggeredMineId(null);
+        setPendingRewards([]);
 
         try {
             const boardData = await simulateBoard();
             setBoard(boardData.cells);
+            setAmountPerWin(boardData.amountPerWin);
             setGameStatus("ready");
         } catch (error) {
             console.error("Failed to load board:", error);
@@ -67,8 +71,13 @@ export const useGameLogic = () => {
                 return;
             }
 
-            // Add reward to score
-            setScore((prev) => addReward(prev, card.reward));
+            // Track reward for animation
+            const currentReward = amountPerWin;
+            setPendingRewards((prev) => [...prev, { cardId, reward: currentReward }]);
+
+            setBoard((prevBoard) => prevBoard.map((c) => (c.id === cardId ? { ...c, reward: currentReward } : c)));
+
+            setAmountPerWin((prev) => prev * 2);
 
             // Check if all safe cells are revealed (win condition)
             if (areAllSafeCellsRevealed(board, newRevealedIds)) {
@@ -76,7 +85,7 @@ export const useGameLogic = () => {
                 setGameStatus("won");
             }
         },
-        [board, revealedIds, gameStatus, isLoading]
+        [board, revealedIds, gameStatus, isLoading, amountPerWin]
     );
 
     const cashOut = useCallback(() => {
@@ -106,6 +115,17 @@ export const useGameLogic = () => {
     // console.warn("totalMines", board.filter((cell) => cell.hasMine).length);
     const totalMines = board.filter((cell) => cell.hasMine).length;
 
+    const completeRewardAnimation = useCallback((cardId) => {
+        setPendingRewards((prev) => {
+            const reward = prev.find((r) => r.cardId === cardId);
+            if (reward) {
+                setScore((currentScore) => addReward(currentScore, reward.reward));
+                return prev.filter((r) => r.cardId !== cardId);
+            }
+            return prev;
+        });
+    }, []);
+
     return {
         board,
         revealedIds,
@@ -116,6 +136,9 @@ export const useGameLogic = () => {
         safeCellsRemaining,
         totalMines,
         coinType,
+        amountPerWin,
+        pendingRewards,
+        completeRewardAnimation,
         selectCoinType,
         flipCard,
         cashOut,

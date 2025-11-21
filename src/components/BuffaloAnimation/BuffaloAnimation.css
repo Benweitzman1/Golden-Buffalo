@@ -1,0 +1,31 @@
+.buffalo-animation {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    z-index: 9999;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    animation: flyToTarget 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.buffalo-animation__image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+@keyframes flyToTarget {
+    0% {
+        transform: translate(-50%, -50%) scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    50% {
+        transform: translate(calc(-50% + var(--delta-x) * 0.5), calc(-50% + var(--delta-y) * 0.5)) scale(1.2) rotate(10deg);
+        opacity: 0.9;
+    }
+    100% {
+        transform: translate(calc(-50% + var(--delta-x)), calc(-50% + var(--delta-y))) scale(0.8) rotate(-5deg);
+        opacity: 0;
+    }
+}
