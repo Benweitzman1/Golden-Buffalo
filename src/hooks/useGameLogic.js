@@ -14,7 +14,7 @@ export const useGameLogic = () => {
     const [gameStatus, setGameStatus] = useState("loading"); // loading, ready, playing, won, lost, cashed_out
     const [isLoading, setIsLoading] = useState(true);
     const [triggeredMineId, setTriggeredMineId] = useState(null);
-    const [coinType, setCoinType] = useState("S");
+    const [coinType, setCoinType] = useState("SC");
     const [amountPerWin, setAmountPerWin] = useState(0);
     const [pendingRewards, setPendingRewards] = useState([]);
 

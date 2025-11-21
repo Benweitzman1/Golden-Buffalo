@@ -7,8 +7,12 @@ import "./Controls.css";
  * Displays score and game status information
  */
 export const Controls = ({ gameLogic, section = "top" }) => {
-    const { score, gameStatus, isLoading, safeCellsRemaining, totalMines, coinType, selectCoinType, cashOut, restart } = gameLogic;
-    const animatedScore = useCounter(score, 400);
+    const { score, gameStatus, isLoading, safeCellsRemaining, totalMines, coinType, amountPerWin, selectCoinType, cashOut, restart } = gameLogic;
+
+    const balance = gameStatus === "lost" ? 0 : score;
+    const animatedBalance = useCounter(balance, 400);
+    const animatedAmountPerWin = amountPerWin || 0;
+    // const animatedAmountPerWin = useCounter(amountPerWin || 0, 400);
 
     const getStatusMessage = () => {
         switch (gameStatus) {
@@ -36,26 +40,25 @@ export const Controls = ({ gameLogic, section = "top" }) => {
     if (section === "top") {
         return (
             <>
-                <div className="controls__coin-selector">
-                    <div className="controls__coin-label">{canSelectCoin ? "Select Coin Type:" : `Coin Type: ${coinType} (Locked)`}</div>
-                    <div className="controls__toggle-wrapper">
-                        <div className="controls__crown-wrapper" data-coin-type={coinType}>
-                            <img
-                                src="/crown.png"
-                                alt="Crown"
-                                className="controls__crown-icon"
-                                onError={(e) => {
-                                    e.target.style.display = "none";
-                                }}
-                            />
-                        </div>
-                        <Toggle value={coinType} onChange={selectCoinType} disabled={!canSelectCoin} coinCImage="/coinC.png" coinSImage="/coinS.png" />
+                <div className="controls__toggle-wrapper">
+                    <div className="controls__crown-wrapper" data-coin-type={coinType}>
+                        <img
+                            src="/crown.png"
+                            alt="Crown"
+                            className="controls__crown-icon"
+                            onError={(e) => {
+                                e.target.style.display = "none";
+                            }}
+                        />
                     </div>
+                    <Toggle value={coinType} onChange={selectCoinType} disabled={!canSelectCoin} coinCImage="/coinGC.png" coinSImage="/coinSC.png" />
                 </div>
 
                 <div className="controls__score">
-                    <span className="controls__label">Coins ({coinType}):</span>
-                    <span className={`controls__value controls__value--${coinType.toLowerCase()}`}>${animatedScore}</span>
+                    <span className="controls__label">Balance ({coinType}):</span>
+                    <span className={`controls__value controls__value--${coinType === "GC" ? "gc" : "sc"}`} data-score-target="true">
+                        ${animatedBalance}
+                    </span>
                 </div>
             </>
         );
@@ -91,8 +94,8 @@ export const Controls = ({ gameLogic, section = "top" }) => {
                 </div>
                 <div className="controls__ribbon-left">
                     <div className="controls__ribbon-score">
-                        <span className="controls__ribbon-score-label">Coins ({coinType}):</span>
-                        <span className={`controls__ribbon-score-value controls__value--${coinType.toLowerCase()}`}>${animatedScore}</span>
+                        <span className="controls__ribbon-score-label">Next Prize</span>
+                        <span className={`controls__ribbon-score-value controls__value--${coinType === "GC" ? "gc" : "sc"}`}>${animatedAmountPerWin}</span>
                     </div>
                 </div>
             </div>

@@ -3,14 +3,14 @@ import "./Toggle.css";
 /**
  * Toggle Switch between coin types
  */
-export const Toggle = ({ value = "C", onChange, disabled = false, coinCImage = "/coinC.png", coinSImage = "/coinS.png" }) => {
+export const Toggle = ({ value = "GC", onChange, disabled = false, coinCImage = "/coinGC.png", coinSImage = "/coinSC.png" }) => {
     const handleToggle = () => {
         if (disabled || !onChange) return;
-        onChange(value === "C" ? "S" : "C");
+        onChange(value === "GC" ? "SC" : "GC");
     };
 
-    const isC = value === "C";
-    const coin = isC ? "c" : "s";
+    const isGC = value === "GC";
+    const coin = isGC ? "gc" : "sc";
 
     return (
         <div className="toggle-container">
@@ -19,39 +19,14 @@ export const Toggle = ({ value = "C", onChange, disabled = false, coinCImage = "
                 className={`toggle-switch toggle-switch--${coin} ${disabled ? "toggle-switch--disabled" : ""}`}
                 onClick={handleToggle}
                 disabled={disabled}
-                aria-label={`Toggle coin type to ${isC ? "S" : "C"}`}
+                aria-label={`Toggle coin type to ${isGC ? "SC" : "GC"}`}
             >
                 <div className="toggle-track">
                     <div className={`toggle-active-side toggle-active-side--${coin}`}></div>
 
                     <div className={`toggle-coin-container toggle-coin-container--${coin}`}>
-                        <img
-                            src={coinCImage}
-                            alt="Coin C"
-                            className={`toggle-coin-icon ${isC ? "toggle-coin-icon--visible" : "toggle-coin-icon--hidden"}`}
-                            onError={(e) => {
-                                e.target.style.display = "none";
-                                const fallback = e.target.nextElementSibling;
-                                if (fallback) fallback.style.display = "flex";
-                            }}
-                        />
-                        <span className={`toggle-coin-fallback ${isC ? "toggle-coin-fallback--visible" : ""}`} style={{ display: "none" }}>
-                            C
-                        </span>
-
-                        <img
-                            src={coinSImage}
-                            alt="Coin S"
-                            className={`toggle-coin-icon ${!isC ? "toggle-coin-icon--visible" : "toggle-coin-icon--hidden"}`}
-                            onError={(e) => {
-                                e.target.style.display = "none";
-                                const fallback = e.target.nextElementSibling;
-                                if (fallback) fallback.style.display = "flex";
-                            }}
-                        />
-                        <span className={`toggle-coin-fallback ${!isC ? "toggle-coin-fallback--visible" : ""}`} style={{ display: "none" }}>
-                            S
-                        </span>
+                        <img src={coinCImage} alt="Coin GC" className={`toggle-coin-icon ${isGC ? "toggle-coin-icon--visible" : "toggle-coin-icon--hidden"}`} />
+                        <img src={coinSImage} alt="Coin SC" className={`toggle-coin-icon ${!isGC ? "toggle-coin-icon--visible" : "toggle-coin-icon--hidden"}`} />
                     </div>
                 </div>
             </button>
