@@ -18,18 +18,27 @@ export const useGameLogic = () => {
     const [amountPerWin, setAmountPerWin] = useState(0);
     const [pendingRewards, setPendingRewards] = useState([]);
 
-    const loadBoard = useCallback(async () => {
-        setIsLoading(true);
-        setGameStatus("loading");
+    const resetGameState = useCallback(() => {
         setRevealedIds([]);
         setScore(0);
         setTriggeredMineId(null);
         setPendingRewards([]);
+    }, []);
+
+    const loadBoardData = useCallback(async () => {
+        const boardData = await simulateBoard();
+        setBoard(boardData.cells);
+        setAmountPerWin(boardData.amountPerWin);
+        return boardData;
+    }, []);
+
+    const loadBoard = useCallback(async () => {
+        setIsLoading(true);
+        setGameStatus("loading");
+        resetGameState();
 
         try {
-            const boardData = await simulateBoard();
-            setBoard(boardData.cells);
-            setAmountPerWin(boardData.amountPerWin);
+            await loadBoardData();
             setGameStatus("ready");
         } catch (error) {
             console.error("Failed to load board:", error);
@@ -37,15 +46,21 @@ export const useGameLogic = () => {
         } finally {
             setIsLoading(false);
         }
-    }, []);
+    }, [resetGameState, loadBoardData]);
 
     useEffect(() => {
         loadBoard();
     }, [loadBoard]);
 
+    const startGame = useCallback(() => {
+        if (gameStatus === "ready" || gameStatus === "cashed_out") {
+            setGameStatus("playing");
+        }
+    }, [gameStatus]);
+
     const flipCard = useCallback(
         (cardId) => {
-            if ((gameStatus !== "playing" && gameStatus !== "ready") || isLoading) {
+            if (gameStatus !== "playing" || isLoading) {
                 return;
             }
 
@@ -56,10 +71,6 @@ export const useGameLogic = () => {
             const card = board.find((c) => c.id === cardId);
             if (!card) {
                 return;
-            }
-
-            if (gameStatus === "ready") {
-                setGameStatus("playing");
             }
 
             const newRevealedIds = [...revealedIds, cardId];
@@ -89,20 +100,33 @@ export const useGameLogic = () => {
     );
 
     const cashOut = useCallback(() => {
-        if (gameStatus === "playing" && score > 0) {
+        if (gameStatus === "playing") {
             setGameStatus("cashed_out");
         }
-    }, [gameStatus, score]);
+    }, [gameStatus]);
 
-    const restart = useCallback(() => {
+    const restart = useCallback(async () => {
         if (!isLoading) {
-            loadBoard();
+            setIsLoading(true);
+            setGameStatus("loading");
+            resetGameState();
+
+            try {
+                await loadBoardData();
+                setGameStatus("playing");
+            } catch (error) {
+                console.error("Failed to load board:", error);
+                setGameStatus("error");
+            } finally {
+                setIsLoading(false);
+            }
         }
-    }, [isLoading, loadBoard]);
+    }, [isLoading, resetGameState, loadBoardData]);
 
     const selectCoinType = useCallback(
         (type) => {
-            if (gameStatus === "ready") {
+            const allowedStatuses = ["ready", "cashed_out", "lost", "won", "error"];
+            if (allowedStatuses.includes(gameStatus)) {
                 setCoinType(type);
             }
         },
@@ -143,5 +167,6 @@ export const useGameLogic = () => {
         flipCard,
         cashOut,
         restart,
+        startGame,
     };
 };

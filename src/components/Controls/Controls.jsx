@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { useCounter } from "../../hooks/useCounter";
 import { Toggle } from "../Toggle/Toggle";
 import "./Controls.css";
@@ -7,7 +8,7 @@ import "./Controls.css";
  * Displays score and game status information
  */
 export const Controls = ({ gameLogic, section = "top" }) => {
-    const { score, gameStatus, isLoading, safeCellsRemaining, totalMines, coinType, amountPerWin, selectCoinType, cashOut, restart } = gameLogic;
+    const { score, gameStatus, isLoading, safeCellsRemaining, totalMines, coinType, amountPerWin, selectCoinType, cashOut, restart, startGame, revealedIds } = gameLogic;
 
     const balance = gameStatus === "lost" ? 0 : score;
     const animatedBalance = useCounter(balance, 400);
@@ -33,9 +34,73 @@ export const Controls = ({ gameLogic, section = "top" }) => {
         }
     };
 
-    const canCashOut = gameStatus === "playing" && score > 0;
-    const canRestart = !isLoading && gameStatus !== "loading";
-    const canSelectCoin = gameStatus === "ready";
+    const isInitialState = gameStatus === "ready" && revealedIds.length === 0 && score === 0;
+
+    const getButtonState = () => {
+        if (gameStatus === "playing") return "cashout";
+        if (["cashed_out", "lost", "won", "error"].includes(gameStatus)) return "restart";
+        return isInitialState ? "play" : "cashout";
+    };
+
+    const buttonState = getButtonState();
+
+    const canPlay = isInitialState && !isLoading;
+    const canCashOut = gameStatus === "playing" && revealedIds.length > 0;
+    const canRestart = ["cashed_out", "lost", "won", "error"].includes(gameStatus) && !isLoading;
+    const canSelectCoin = buttonState === "restart" || isInitialState;
+
+    const prevButtonStateRef = useRef("");
+    const [isTransitioning, setIsTransitioning] = useState(false);
+    const [transitionClass, setTransitionClass] = useState("");
+
+    useEffect(() => {
+        if (prevButtonStateRef.current === "") {
+            prevButtonStateRef.current = buttonState;
+        }
+    }, [buttonState]);
+
+    useEffect(() => {
+        const prevState = prevButtonStateRef.current;
+
+        if (prevState !== "" && prevState !== buttonState) {
+            if (prevState === "play" && buttonState === "cashout") {
+                setTransitionClass("play-to-cashout");
+            } else if (prevState === "cashout" && buttonState === "restart") {
+                setTransitionClass("cashout-to-restart");
+            } else if (prevState === "restart" && buttonState === "cashout") {
+                setTransitionClass("restart-to-cashout");
+            } else if (prevState === "play" && buttonState === "restart") {
+                setTransitionClass("play-to-restart");
+            }
+
+            setIsTransitioning(true);
+            const timer = setTimeout(() => {
+                setIsTransitioning(false);
+                setTransitionClass("");
+            }, 600);
+            return () => clearTimeout(timer);
+        }
+        prevButtonStateRef.current = buttonState;
+    }, [buttonState]);
+
+    const handleButtonClick = () => {
+        if (buttonState === "play") {
+            startGame();
+        } else if (buttonState === "cashout") {
+            cashOut();
+        } else if (buttonState === "restart") {
+            restart();
+        }
+    };
+
+    const isButtonDisabled = buttonState === "play" ? !canPlay : buttonState === "cashout" ? !canCashOut : !canRestart;
+
+    const getButtonText = () => {
+        if (buttonState === "play") return "Play";
+        if (buttonState === "cashout") return "Cash Out";
+        if (buttonState === "restart") return gameStatus === "error" ? "Try Again" : "Restart";
+        return "Play";
+    };
 
     if (section === "top") {
         return (
@@ -86,17 +151,25 @@ export const Controls = ({ gameLogic, section = "top" }) => {
 
                 <div className="controls__actions">
                     <div className="controls__cashout-wrapper">
-                        <button type="button" className="controls__btn controls__btn--cashout" onClick={cashOut} disabled={!canCashOut}>
-                            <span className="controls__btn-text">Cash Out</span>
-                            <span className={`controls__btn-balance controls__value--${coinType === "GC" ? "gc" : "sc"}`}>
-                                {animatedBalance} {coinType}
-                            </span>
+                        <button
+                            type="button"
+                            className={`controls__btn controls__btn--action controls__btn--${buttonState} ${isTransitioning ? `controls__btn--transitioning controls__btn--${transitionClass}` : ""}`}
+                            onClick={handleButtonClick}
+                            disabled={isButtonDisabled}
+                        >
+                            {buttonState === "cashout" ? (
+                                <>
+                                    <span className="controls__btn-text">Cash Out</span>
+                                    <span className={`controls__btn-balance controls__value--${coinType === "GC" ? "gc" : "sc"}`}>
+                                        {animatedBalance} {coinType}
+                                    </span>
+                                </>
+                            ) : (
+                                <span className="controls__btn-text">{getButtonText()}</span>
+                            )}
                         </button>
-                        <span className="controls__balance-label">Balance</span>
+                        {buttonState === "cashout" && <span className="controls__balance-label">Balance</span>}
                     </div>
-                    <button type="button" className="controls__btn controls__btn--restart" onClick={restart} disabled={!canRestart}>
-                        {gameStatus === "error" ? "Try Again" : "Restart"}
-                    </button>
                 </div>
                 <div className="controls__ribbon-left">
                     <div className="controls__score controls__score--ribbon">

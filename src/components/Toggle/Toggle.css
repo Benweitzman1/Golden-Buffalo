@@ -130,10 +130,6 @@
     left: calc(100% - 56px);
 }
 
-.toggle-coin-container--animating {
-    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
 /* Coin Icon Image */
 .toggle-coin-icon {
     position: absolute;
