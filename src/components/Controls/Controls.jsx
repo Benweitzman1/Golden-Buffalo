@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useCounter } from "../../hooks/useCounter";
+import { formatNumber } from "../../utils/numberFormat";
 import { Toggle } from "../Toggle/Toggle";
 import "./Controls.css";
 
@@ -121,16 +122,17 @@ export const Controls = ({ gameLogic, section = "top" }) => {
 
                 <div className="controls__ribbon-score controls__ribbon-score--top">
                     <div className="controls__ribbon-score-row">
-                        <div className="controls__ribbon-score-item">
+                        <div className="controls__ribbon-score-item controls__ribbon-score-item--next">
                             <span className="controls__ribbon-score-label">Next Prize</span>
                             <span className={`controls__ribbon-score-value controls__value--${coinType === "GC" ? "gc" : "sc"}`}>
-                                {animatedAmountPerWin} {coinType}
+                                {formatNumber(animatedAmountPerWin)} {coinType}
                             </span>
                         </div>
-                        <div className="controls__ribbon-score-item">
+                        <div className="controls__ribbon-score-divider"></div>
+                        <div className="controls__ribbon-score-item controls__ribbon-score-item--max">
                             <span className="controls__ribbon-score-label">Max Prize</span>
                             <span className={`controls__ribbon-score-value controls__value--${coinType === "GC" ? "gc" : "sc"}`}>
-                                {maxPrize || 0} {coinType}
+                                {formatNumber(maxPrize || 0)} {coinType}
                             </span>
                         </div>
                     </div>
@@ -171,7 +173,7 @@ export const Controls = ({ gameLogic, section = "top" }) => {
                                 <>
                                     <span className="controls__btn-text">Cash Out</span>
                                     <span className={`controls__btn-balance controls__value--${coinType === "GC" ? "gc" : "sc"}`}>
-                                        {animatedBalance} {coinType}
+                                        {formatNumber(animatedBalance)} {coinType}
                                     </span>
                                 </>
                             ) : (
@@ -185,7 +187,7 @@ export const Controls = ({ gameLogic, section = "top" }) => {
                     <div className="controls__score controls__score--ribbon">
                         <span className="controls__label">Balance:</span>
                         <span className={`controls__value controls__value--${coinType === "GC" ? "gc" : "sc"}`} data-score-target="true">
-                            {animatedBalance} {coinType}
+                            {formatNumber(animatedBalance)} {coinType}
                         </span>
                     </div>
                 </div>

@@ -64,6 +64,14 @@
     transition: all 0.3s ease;
     white-space: nowrap;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    /* Prevent overflow for large numbers */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    word-break: keep-all;
+    /* Ensure proper number display with comma formatting */
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
 }
 
 .controls__value--sc {
@@ -97,53 +105,325 @@
     display: none;
 }
 
-/* Ribbon Score - Top Section (swapped from bottom) */
+/* Ribbon Score - Top Section */
 .controls__ribbon-score--top {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
-    padding: clamp(0.75rem, 1.5vh, 1rem) clamp(1rem, 2vw, 1.5rem);
-    background: linear-gradient(135deg, rgba(20, 20, 30, 0.95) 0%, rgba(30, 25, 40, 0.95) 100%);
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 215, 0, 0.2);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    padding: clamp(1rem, 2vh, 1.25rem) clamp(1.25rem, 3vw, 2rem);
+    background: linear-gradient(135deg, rgba(15, 15, 25, 0.98) 0%, rgba(25, 20, 35, 0.98) 100%);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15), inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Subtle shine effect on ribbon */
+.controls__ribbon-score--top::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
 }
 
 /* Row container for Next Prize and Max Prize */
 .controls__ribbon-score-row {
     display: flex;
-    gap: clamp(1rem, 3vw, 2rem);
-    justify-content: space-around;
-    align-items: flex-start;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    position: relative;
+    z-index: 1;
+    /* Ensure row can expand for large numbers on desktop */
+    min-width: 0;
+    flex-wrap: nowrap;
+}
+
+/* Vertical divider between prizes */
+.controls__ribbon-score-divider {
+    width: 1px;
+    height: 60%;
+    min-height: 40px;
+    background: linear-gradient(to bottom, transparent, rgba(255, 215, 0, 0.4), rgba(255, 215, 0, 0.6), rgba(255, 215, 0, 0.4), transparent);
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
 }
 
 /* Individual prize item (Next Prize or Max Prize) */
 .controls__ribbon-score-item {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: clamp(0.375rem, 1vh, 0.5rem);
     flex: 1;
     min-width: 0;
+    max-width: 100%;
+    align-items: center;
+    text-align: center;
+    padding: clamp(0.5rem, 1.5vh, 0.75rem) clamp(0.75rem, 2vw, 1.25rem);
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 215, 0, 0.15);
+    transition: all 0.3s ease;
+    /* Prevent overflow - container will adapt to content */
+    box-sizing: border-box;
+    overflow: visible;
+}
+
+.controls__ribbon-score-item:hover {
+    background: rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 215, 0, 0.25);
+    transform: translateY(-2px);
 }
 
 .controls__ribbon-score-label {
-    font-size: clamp(0.75rem, 2vw, 0.85rem);
-    color: rgba(255, 255, 255, 0.7);
+    font-size: clamp(0.7rem, 1.8vw, 0.9rem);
+    color: rgba(255, 255, 255, 0.75);
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: clamp(0.5px, 0.2vw, 1px);
     white-space: nowrap;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    margin-bottom: clamp(0.125rem, 0.5vh, 0.25rem);
 }
 
 .controls__ribbon-score-value {
-    font-size: clamp(1.5rem, 4vw, 2rem);
-    font-weight: 700;
-    line-height: 1;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    font-size: clamp(0.9rem, 3vw, 2.25rem);
+    font-weight: 800;
+    line-height: 1.1;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7), 0 0 16px currentColor;
     transition: all 0.3s ease;
+    /* Handle large numbers (up to 12 digits: 999,999,999,999) gracefully */
     white-space: nowrap;
+    word-break: keep-all;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    /* Ensure currency type (GC/SC) always stays visible */
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.25em;
+    flex-wrap: nowrap;
+    /* Prevent overflow - let font size scale instead */
+    min-width: 0;
+    max-width: 100%;
+}
+
+/* Enhanced coin type colors with glow */
+.controls__ribbon-score-value.controls__value--sc {
+    color: #10b981;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7), 0 0 20px rgba(16, 185, 129, 0.6), 0 0 40px rgba(16, 185, 129, 0.3);
+}
+
+.controls__ribbon-score-value.controls__value--gc {
+    color: #eab308;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7), 0 0 20px rgba(234, 179, 8, 0.6), 0 0 40px rgba(234, 179, 8, 0.3);
+}
+
+/* Desktop-specific enhancements */
+@media (min-width: 1024px) {
+    .controls__ribbon-score--top {
+        padding: clamp(1.25rem, 2.5vh, 1.5rem) clamp(2rem, 5vw, 3rem);
+        border-radius: 20px;
+        box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6), inset 0 2px 0 rgba(255, 255, 255, 0.2), inset 0 -2px 0 rgba(0, 0, 0, 0.4);
+        border-width: 2px;
+        /* Allow overflow on desktop to show full numbers */
+        overflow: visible;
+    }
+
+    .controls__ribbon-score-row {
+        gap: clamp(2rem, 5vw, 4rem);
+        /* Allow row to expand for large numbers */
+        flex-wrap: nowrap;
+    }
+
+    .controls__ribbon-score-item {
+        padding: clamp(0.75rem, 2vh, 1rem) clamp(1.25rem, 3vw, 2rem);
+        border-radius: 16px;
+        /* Allow item to grow to accommodate large numbers */
+        min-width: 0;
+        flex: 1 1 auto;
+        overflow: visible;
+        /* Ensure container can expand for very large numbers */
+        max-width: none;
+    }
+
+    .controls__ribbon-score-label {
+        font-size: clamp(0.85rem, 1.5vw, 1rem);
+        letter-spacing: 1px;
+    }
+
+    .controls__ribbon-score-value {
+        /* Dynamic font sizing: start larger, but scale down for very large numbers */
+        /* Min size smaller to accommodate very large numbers (up to 12 digits with commas) */
+        font-size: clamp(0.75rem, 2vw, 2.5rem);
+        /* Always show full number on desktop - no truncation */
+        overflow: visible;
+        text-overflow: clip;
+        white-space: nowrap;
+        max-width: none;
+        /* Allow value to expand to fit full number + currency */
+        width: auto;
+        min-width: fit-content;
+        /* Ensure currency type is always visible */
+        word-break: keep-all;
+        /* Use inline-flex to keep number and currency together */
+        display: inline-flex;
+        align-items: baseline;
+        gap: 0.25em;
+        flex-wrap: nowrap;
+    }
+
+    .controls__ribbon-score-divider {
+        height: 70%;
+        min-height: 50px;
+        flex-shrink: 0;
+    }
+}
+
+/* Mobile portrait optimizations */
+@media (max-width: 768px) and (orientation: portrait) {
+    .controls__ribbon-score--top {
+        padding: clamp(0.875rem, 2vh, 1rem) clamp(1rem, 3vw, 1.5rem);
+        border-radius: 14px;
+    }
+
+    .controls__ribbon-score-row {
+        gap: clamp(1rem, 4vw, 1.75rem);
+    }
+
+    .controls__ribbon-score-item {
+        padding: clamp(0.5rem, 1.5vh, 0.625rem) clamp(0.625rem, 2vw, 1rem);
+        border-radius: 10px;
+    }
+
+    .controls__ribbon-score-label {
+        font-size: clamp(0.65rem, 2vw, 0.8rem);
+    }
+
+    .controls__ribbon-score-value {
+        font-size: clamp(0.85rem, 3.5vw, 1.75rem);
+        letter-spacing: -0.02em;
+        /* Ensure large numbers fit with currency type visible on mobile portrait */
+        max-width: 100%;
+        overflow: visible;
+        white-space: nowrap;
+        word-break: keep-all;
+        /* Ensure currency type stays visible */
+        display: inline-flex;
+        align-items: baseline;
+        gap: 0.25em;
+    }
+
+    .controls__ribbon-score-divider {
+        height: 50%;
+        min-height: 35px;
+    }
+}
+
+/* Mobile landscape optimizations - Stack vertically */
+@media (max-width: 1023px) and (orientation: landscape) {
+    .controls__ribbon-score--top {
+        padding: clamp(0.75rem, 1.5vh, 0.875rem) clamp(0.5rem, 1.5vw, 1rem);
+        /* Ensure ribbon container prevents overflow in landscape */
+        overflow: hidden;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* Stack prizes vertically in landscape mobile */
+    .controls__ribbon-score-row {
+        flex-direction: column;
+        gap: clamp(0.75rem, 2vh, 1rem);
+        align-items: stretch;
+        /* Ensure row prevents overflow */
+        overflow: hidden;
+        /* Moderate width - balanced between too narrow and too wide */
+        max-width: calc(100% + 0.5rem);
+        width: calc(100% + 0.5rem);
+        margin: 0 -0.25rem;
+        box-sizing: border-box;
+    }
+
+    /* Hide vertical divider in landscape mobile (stacked layout) */
+    .controls__ribbon-score-divider {
+        display: none;
+    }
+
+    /* Horizontal divider between stacked prizes */
+    .controls__ribbon-score-row::after {
+        content: "";
+        width: 80%;
+        height: 1px;
+        background: linear-gradient(to right, transparent, rgba(255, 215, 0, 0.4), rgba(255, 215, 0, 0.6), rgba(255, 215, 0, 0.4), transparent);
+        box-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
+        margin: clamp(0.25rem, 1vh, 0.5rem) auto;
+        display: block;
+    }
+
+    .controls__ribbon-score-item {
+        padding: clamp(0.5rem, 1.25vh, 0.625rem) clamp(0.75rem, 2vw, 1rem);
+        width: 100%;
+        flex: none;
+        /* Ensure large numbers fit without overflow */
+        overflow: hidden;
+        box-sizing: border-box;
+        /* Ensure container can constrain content */
+        min-width: 0;
+        max-width: 100%;
+        /* Center content horizontally in landscape mode */
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .controls__ribbon-score-label {
+        font-size: clamp(0.7rem, 2vw, 0.85rem);
+        /* Ensure label is centered in landscape mode */
+        text-align: center;
+        width: 100%;
+    }
+
+    .controls__ribbon-score-value {
+        /* Aggressive dynamic font sizing for landscape mobile to handle very large numbers */
+        /* Minimum size reduced significantly to accommodate numbers like 2,000,000,000 with currency */
+        /* Formula: minimum size allows ~15 characters (2,000,000,000 GC) to fit in container */
+        font-size: clamp(0.55rem, 2vw, 1.5rem);
+        /* Ensure large numbers fit with currency type visible - prevent overflow */
+        max-width: 100%;
+        width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: clip;
+        word-break: keep-all;
+        /* Ensure currency type stays visible */
+        display: inline-flex;
+        align-items: baseline;
+        gap: 0.2em;
+        flex-wrap: nowrap;
+        /* Use tighter letter spacing for large numbers */
+        letter-spacing: -0.04em;
+        /* Ensure value doesn't exceed container */
+        box-sizing: border-box;
+        /* Ensure proper sizing calculation */
+        min-width: 0;
+        /* Center numbers horizontally in landscape mode */
+        justify-content: center;
+        margin: 0 auto;
+        text-align: center;
+    }
 }
 
 .controls__stats span {
@@ -246,16 +526,8 @@
     animation: playToCashOut 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-.controls__btn--transitioning.controls__btn--cashout-to-play {
-    animation: cashOutToPlay 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
 .controls__btn--transitioning.controls__btn--cashout-to-restart {
     animation: cashOutToRestart 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-.controls__btn--transitioning.controls__btn--restart-to-play {
-    animation: restartToPlay 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 .controls__btn--transitioning.controls__btn--restart-to-cashout {
@@ -281,21 +553,6 @@
     }
 }
 
-@keyframes cashOutToPlay {
-    0% {
-        transform: scale(1);
-        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-    }
-    50% {
-        transform: scale(1.05) rotate(1deg);
-        box-shadow: 0 8px 30px rgba(59, 130, 246, 0.7), 0 0 20px rgba(59, 130, 246, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.4);
-    }
-    100% {
-        transform: scale(1) rotate(0deg);
-        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-    }
-}
-
 @keyframes cashOutToRestart {
     0% {
         transform: scale(1);
@@ -308,21 +565,6 @@
     100% {
         transform: scale(1) rotate(0deg);
         box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-    }
-}
-
-@keyframes restartToPlay {
-    0% {
-        transform: scale(1);
-        box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-    }
-    50% {
-        transform: scale(1.05) rotate(-1deg);
-        box-shadow: 0 8px 30px rgba(59, 130, 246, 0.7), 0 0 20px rgba(59, 130, 246, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.4);
-    }
-    100% {
-        transform: scale(1) rotate(0deg);
-        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
     }
 }
 
@@ -365,11 +607,6 @@
 
 .controls__btn--restart:not(.controls__btn--transitioning) {
     animation: sparkle 1.2s ease-in-out;
-}
-
-/* Prevent sparkle animation from looping */
-.controls__btn--restart.controls__btn--sparkled {
-    animation: none;
 }
 
 @keyframes sparkle {
@@ -473,6 +710,14 @@
         font-weight: 700;
         line-height: 1;
         display: block;
+        /* Prevent overflow for large numbers (up to 12 digits with commas) */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+        white-space: nowrap;
+        word-break: keep-all;
+        letter-spacing: -0.02em;
+        font-variant-numeric: tabular-nums;
     }
 
     .controls__balance-label {
@@ -826,7 +1071,6 @@
     }
 
     .controls__actions {
-        grid-template-columns: 1fr;
         gap: clamp(0.5rem, 1vh, 0.75rem);
         width: 100%;
         max-width: 100%;
