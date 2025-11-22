@@ -675,12 +675,43 @@
         font-size: clamp(0.75rem, 1.8vw, 0.85rem);
     }
 
+    /* Actions wrapper on mobile */
+    .controls__actions-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: clamp(0.75rem, 2vw, 1.5rem);
+        flex-wrap: wrap;
+        width: 100%;
+    }
+
     /* Single centered button in portrait - enhanced visibility */
     .controls__actions {
         display: flex;
         justify-content: center;
         gap: clamp(0.5rem, 1vw, 0.75rem);
         padding: 0.125rem 0;
+    }
+
+    /* Toggle wrapper in actions wrapper on mobile */
+    .controls__actions-wrapper .controls__toggle-wrapper {
+        flex-shrink: 0;
+        min-width: 84px; /* Reduced by 30% from 120px */
+        width: auto;
+    }
+
+    /* Ensure toggle container maintains proper size on mobile */
+    .controls__actions-wrapper .controls__toggle-wrapper .toggle-container {
+        width: 84px; /* Reduced by 30% from 120px */
+        max-width: 84px;
+        min-width: 84px;
+    }
+
+    /* Ensure toggle switch maintains proper size on mobile */
+    .controls__actions-wrapper .controls__toggle-wrapper .toggle-switch {
+        width: 70px; /* Reduced by 30% from 100px */
+        max-width: 70px;
+        min-width: 70px;
     }
 
     /* Cash Out button wrapper for mobile balance display */
@@ -877,16 +908,46 @@
         line-height: 1;
     }
 
-    /* Center - Actions (buttons) */
-    .controls__bottom-wrapper > .controls__actions {
+    /* Center - Actions wrapper (toggle + buttons) */
+    .controls__bottom-wrapper > .controls__actions-wrapper {
         flex: 0 0 auto;
         display: flex;
-        gap: 1rem;
+        align-items: center;
+        gap: 1.5rem;
         justify-content: center;
         order: 2;
     }
 
-    .controls__bottom-wrapper > .controls__actions .controls__btn {
+    /* Toggle wrapper in actions wrapper on desktop */
+    .controls__bottom-wrapper > .controls__actions-wrapper .controls__toggle-wrapper {
+        flex-shrink: 0;
+        min-width: 84px; /* Reduced by 30% from 120px */
+        width: auto;
+    }
+
+    /* Ensure toggle container maintains proper size on desktop */
+    .controls__bottom-wrapper > .controls__actions-wrapper .controls__toggle-wrapper .toggle-container {
+        width: 84px; /* Reduced by 30% from 120px */
+        max-width: 84px;
+        min-width: 84px;
+    }
+
+    /* Ensure toggle switch maintains proper size on desktop */
+    .controls__bottom-wrapper > .controls__actions-wrapper .controls__toggle-wrapper .toggle-switch {
+        width: 70px; /* Reduced by 30% from 100px */
+        max-width: 70px;
+        min-width: 70px;
+    }
+
+    /* Actions (buttons) in wrapper */
+    .controls__actions-wrapper > .controls__actions {
+        flex: 0 0 auto;
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+    }
+
+    .controls__actions-wrapper > .controls__actions .controls__btn {
         padding: 0.875rem 2rem;
         font-size: 0.95rem;
         white-space: nowrap;

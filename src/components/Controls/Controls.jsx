@@ -105,39 +105,23 @@ export const Controls = ({ gameLogic, section = "top" }) => {
 
     if (section === "top") {
         return (
-            <>
-                <div className="controls__toggle-wrapper">
-                    <div className="controls__crown-wrapper" data-coin-type={coinType}>
-                        <img
-                            src="/crown.png"
-                            alt="Crown"
-                            className="controls__crown-icon"
-                            onError={(e) => {
-                                e.target.style.display = "none";
-                            }}
-                        />
+            <div className="controls__ribbon-score controls__ribbon-score--top">
+                <div className="controls__ribbon-score-row">
+                    <div className="controls__ribbon-score-item controls__ribbon-score-item--next">
+                        <span className="controls__ribbon-score-label">Next Prize</span>
+                        <span className={`controls__ribbon-score-value controls__value--${coinType === "GC" ? "gc" : "sc"}`}>
+                            {formatNumber(animatedAmountPerWin)} {coinType}
+                        </span>
                     </div>
-                    <Toggle value={coinType} onChange={selectCoinType} disabled={!canSelectCoin} coinCImage="/coinGC.png" coinSImage="/coinSC.png" />
-                </div>
-
-                <div className="controls__ribbon-score controls__ribbon-score--top">
-                    <div className="controls__ribbon-score-row">
-                        <div className="controls__ribbon-score-item controls__ribbon-score-item--next">
-                            <span className="controls__ribbon-score-label">Next Prize</span>
-                            <span className={`controls__ribbon-score-value controls__value--${coinType === "GC" ? "gc" : "sc"}`}>
-                                {formatNumber(animatedAmountPerWin)} {coinType}
-                            </span>
-                        </div>
-                        <div className="controls__ribbon-score-divider"></div>
-                        <div className="controls__ribbon-score-item controls__ribbon-score-item--max">
-                            <span className="controls__ribbon-score-label">Max Prize</span>
-                            <span className={`controls__ribbon-score-value controls__value--${coinType === "GC" ? "gc" : "sc"}`}>
-                                {formatNumber(maxPrize || 0)} {coinType}
-                            </span>
-                        </div>
+                    <div className="controls__ribbon-score-divider"></div>
+                    <div className="controls__ribbon-score-item controls__ribbon-score-item--max">
+                        <span className="controls__ribbon-score-label">Max Prize</span>
+                        <span className={`controls__ribbon-score-value controls__value--${coinType === "GC" ? "gc" : "sc"}`}>
+                            {formatNumber(maxPrize || 0)} {coinType}
+                        </span>
                     </div>
                 </div>
-            </>
+            </div>
         );
     }
 
@@ -161,26 +145,43 @@ export const Controls = ({ gameLogic, section = "top" }) => {
                     <p className="controls__message">{getStatusMessage()}</p>
                 </div>
 
-                <div className="controls__actions">
-                    <div className="controls__cashout-wrapper">
-                        <button
-                            type="button"
-                            className={`controls__btn controls__btn--action controls__btn--${buttonState} ${isTransitioning ? `controls__btn--transitioning controls__btn--${transitionClass}` : ""}`}
-                            onClick={handleButtonClick}
-                            disabled={isButtonDisabled}
-                        >
-                            {buttonState === "cashout" ? (
-                                <>
-                                    <span className="controls__btn-text">Cash Out</span>
-                                    <span className={`controls__btn-balance controls__value--${coinType === "GC" ? "gc" : "sc"}`}>
-                                        {formatNumber(animatedBalance)} {coinType}
-                                    </span>
-                                </>
-                            ) : (
-                                <span className="controls__btn-text">{getButtonText()}</span>
-                            )}
-                        </button>
-                        {buttonState === "cashout" && <span className="controls__balance-label">Balance</span>}
+                <div className="controls__actions-wrapper">
+                    <div className="controls__toggle-wrapper">
+                        <div className="controls__crown-wrapper" data-coin-type={coinType}>
+                            <img
+                                src="/crown.png"
+                                alt="Crown"
+                                className="controls__crown-icon"
+                                onError={(e) => {
+                                    e.target.style.display = "none";
+                                }}
+                            />
+                        </div>
+                        <Toggle value={coinType} onChange={selectCoinType} disabled={!canSelectCoin} coinCImage="/coinGC.png" coinSImage="/coinSC.png" />
+                    </div>
+                    <div className="controls__actions">
+                        <div className="controls__cashout-wrapper">
+                            <button
+                                type="button"
+                                className={`controls__btn controls__btn--action controls__btn--${buttonState} ${
+                                    isTransitioning ? `controls__btn--transitioning controls__btn--${transitionClass}` : ""
+                                }`}
+                                onClick={handleButtonClick}
+                                disabled={isButtonDisabled}
+                            >
+                                {buttonState === "cashout" ? (
+                                    <>
+                                        <span className="controls__btn-text">Cash Out</span>
+                                        <span className={`controls__btn-balance controls__value--${coinType === "GC" ? "gc" : "sc"}`}>
+                                            {formatNumber(animatedBalance)} {coinType}
+                                        </span>
+                                    </>
+                                ) : (
+                                    <span className="controls__btn-text">{getButtonText()}</span>
+                                )}
+                            </button>
+                            {buttonState === "cashout" && <span className="controls__balance-label">Balance</span>}
+                        </div>
                     </div>
                 </div>
                 <div className="controls__ribbon-left">
