@@ -177,7 +177,7 @@ export const Controls = ({ gameLogic, section = "top" }) => {
                                 {buttonState === "cashout" ? (
                                     <>
                                         <span className="controls__btn-text">Cash Out</span>
-                                        <span className={`controls__btn-balance controls__value--${coinType === "GC" ? "gc" : "sc"}`}>
+                                        <span className={`controls__btn-balance controls__value--${coinType === "GC" ? "gc" : "sc"}`} data-score-target="true">
                                             {formatNumber(animatedBalance)} {coinType}
                                         </span>
                                     </>
