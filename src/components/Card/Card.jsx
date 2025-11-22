@@ -36,7 +36,7 @@ export const Card = ({ card, isRevealed, isTriggeredMine, onFlip, disabled }) =>
         if (card.hasMine) {
             return "💣";
         }
-        return ` ${card.reward}`;
+        return;
     };
 
     const getCardClassName = () => {

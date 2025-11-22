@@ -22,6 +22,7 @@ export const useGameLogic = () => {
 
     const safeCellsRemaining = getSafeCellsRemaining(board, revealedIds);
     const totalMines = board.filter((cell) => cell.hasMine).length;
+    const totalSafeCells = board.filter((cell) => !cell.hasMine).length;
 
     const resetGameState = useCallback(() => {
         setRevealedIds([]);
@@ -186,6 +187,7 @@ export const useGameLogic = () => {
         pendingRewards,
         safeCellsRemaining,
         totalMines,
+        totalSafeCells,
         flipCard,
         cashOut,
         restart,

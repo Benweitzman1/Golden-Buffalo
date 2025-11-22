@@ -12,8 +12,8 @@ const App = () => {
     return (
         <main className="app-shell">
             <header className="app-header">
-                <h1 className="app-title">MineSweeper MiniGame</h1>
-                <p className="app-subtitle">Flip cards, collect coins, avoid mines!</p>
+                <h1 className="app-title">Golden Buffalo</h1>
+                <p className="app-subtitle">Chase the sun, Collect the flowers, Win the horns</p>
             </header>
 
             <div className="app-game-container">

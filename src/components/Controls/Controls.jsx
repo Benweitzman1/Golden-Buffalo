@@ -9,7 +9,7 @@ import "./Controls.css";
  * Displays score and game status information
  */
 export const Controls = ({ gameLogic, section = "top" }) => {
-    const { score, gameStatus, isLoading, safeCellsRemaining, totalMines, coinType, amountPerWin, maxPrize, selectCoinType, cashOut, restart, startGame, revealedIds } = gameLogic;
+    const { score, gameStatus, isLoading, safeCellsRemaining, totalMines, totalSafeCells, coinType, amountPerWin, maxPrize, selectCoinType, cashOut, restart, startGame, revealedIds } = gameLogic;
 
     const balance = gameStatus === "lost" ? 0 : score;
     const animatedBalance = useCounter(balance, 400);
@@ -135,11 +135,15 @@ export const Controls = ({ gameLogic, section = "top" }) => {
     }
 
     if (section === "bottom") {
+        const collectedPrizes = totalSafeCells - safeCellsRemaining;
+
         return (
             <div className="controls__bottom-wrapper">
                 <div className="controls__stats">
-                    <span>Safe: {safeCellsRemaining}</span>
-                    <span>Mines: {totalMines}</span>
+                    <img src="/buffalo.png" alt="Buffalo" className="controls__stats-icon" />
+                    <span>
+                        {collectedPrizes}/{totalSafeCells}
+                    </span>
                 </div>
 
                 <div className="controls__status">
