@@ -22,9 +22,6 @@ const App = () => {
                 </div>
 
                 <div ref={boardWrapperRef} className="app-board-wrapper" style={{ "--board-size": `${boardSize}px` }}>
-                    <div className="app-board-status">
-                        <Controls gameLogic={gameLogic} section="status" />
-                    </div>
                     <Board gameLogic={gameLogic} />
                 </div>
 

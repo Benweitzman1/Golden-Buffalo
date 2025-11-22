@@ -19,8 +19,8 @@ export const useBoardSize = () => {
 
                 let percentage, maxBoardSize;
                 if (isDesktop) {
-                    percentage = 0.98;
-                    maxBoardSize = 1000;
+                    percentage = 0.95;
+                    maxBoardSize = Math.min(availableWidth, availableHeight) * percentage;
                 } else if (isLargePhoneLandscape) {
                     percentage = 0.85;
                     maxBoardSize = 450;

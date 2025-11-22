@@ -11,6 +11,7 @@
     height: var(--board-size, 450px);
     max-width: 100%;
     max-height: 100%;
+    overflow: hidden;
 }
 
 .board__row {
@@ -29,10 +30,12 @@
     .board {
         gap: clamp(0.3rem, 0.6vw, 0.45rem);
         padding: clamp(0.3rem, 0.8vw, 0.6rem);
-        max-width: 1000px !important;
-        max-height: 1000px !important;
+        max-width: 100% !important;
+        max-height: 100% !important;
         width: var(--board-size, 450px) !important;
         height: var(--board-size, 450px) !important;
+        box-sizing: border-box;
+        overflow: hidden;
     }
 
     .board__row {
@@ -58,24 +61,19 @@
     }
 }
 
-/* Portrait mode - ensure minimum spacing on all devices */
 @media (orientation: portrait) and (max-width: 480px) {
     .board {
-        /* Absolute minimum: 0.5rem gaps, 0.625rem padding - never smaller */
         gap: 0.5rem !important;
         padding: 0.625rem !important;
     }
 
     .board__row {
-        /* Absolute minimum: 0.5rem gap between columns - never smaller */
         gap: 0.5rem !important;
     }
 }
 
-/* iPhone SE Portrait - Ensure proper spacing */
 @media (max-width: 375px) and (orientation: portrait) {
     .board {
-        /* Absolute minimum spacing - never compress below this */
         gap: 0.5rem !important;
         padding: 0.625rem !important;
     }

@@ -1,24 +1,22 @@
-/* Toggle Container - Wraps toggle switch */
 .toggle-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
     width: 100%;
-    max-width: 84px; /* Reduced by 30% from 120px (120 * 0.7 = 84px) */
+    max-width: 84px;
     margin: 0 auto;
     padding: 0;
 }
 
-/* Toggle Switch Button */
 .toggle-switch {
     position: relative;
     width: 100%;
-    max-width: 70px; /* Reduced by 30% from 100px (100 * 0.7 = 70px) */
-    height: 32px; /* Reduced by 30% from 45px (45 * 0.7 = 31.5, rounded to 32px) */
+    max-width: 70px;
+    height: 32px;
     padding: 0;
     border: 2px solid #3d2507;
-    border-radius: 16px; /* Reduced proportionally (half of height) */
+    border-radius: 16px;
     background: #5d390b;
     cursor: pointer;
     overflow: hidden;
@@ -50,16 +48,14 @@
     pointer-events: none;
 }
 
-/* Toggle Track - Inner container */
 .toggle-track {
     position: relative;
     width: 100%;
     height: 100%;
-    border-radius: 14px; /* Reduced proportionally (height - 4px) */
+    border-radius: 14px;
     overflow: hidden;
 }
 
-/* Active Side Background - Golden for C, Green for S */
 .toggle-active-side {
     position: absolute;
     top: 0;
@@ -72,16 +68,15 @@
 .toggle-active-side--gc {
     background: transparent;
     left: 0;
-    border-radius: 12px 0 0 12px; /* Reduced proportionally */
+    border-radius: 12px 0 0 12px;
 }
 
 .toggle-active-side--sc {
     background: transparent;
     left: 50%;
-    border-radius: 0 12px 12px 0; /* Reduced proportionally */
+    border-radius: 0 12px 12px 0;
 }
 
-/* Inactive Side - Solid brown fill (no gradients, no shadows) */
 .toggle-switch--gc .toggle-track::after {
     content: "";
     position: absolute;
@@ -89,10 +84,9 @@
     right: 0;
     width: 50%;
     height: 100%;
-    /* background: #5d390b; */
     transition: all 0.3s ease;
     z-index: 0;
-    border-radius: 0 12px 12px 0; /* Reduced proportionally */
+    border-radius: 0 12px 12px 0;
 }
 
 .toggle-switch--sc .toggle-track::before {
@@ -105,16 +99,15 @@
     background: #5d390b;
     transition: all 0.3s ease;
     z-index: 0;
-    border-radius: 12px 0 0 12px; /* Reduced proportionally */
+    border-radius: 12px 0 0 12px;
 }
 
-/* Coin Icon Container - Slides between positions with 5px padding */
 .toggle-coin-container {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 24px; /* Reduced by 30% from 34px (34 * 0.7 = 23.8, rounded to 24px) */
-    height: 24px; /* Reduced by 30% from 34px */
+    width: 24px;
+    height: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -123,14 +116,13 @@
 }
 
 .toggle-coin-container--gc {
-    left: 5px; /* Adjusted for smaller size */
+    left: 5px;
 }
 
 .toggle-coin-container--sc {
-    left: calc(100% - 29px); /* Adjusted for smaller size (was calc(100% - 40px)) */
+    left: calc(100% - 29px);
 }
 
-/* Coin Icon Image */
 .toggle-coin-icon {
     position: absolute;
     width: 100%;
@@ -152,6 +144,3 @@
     z-index: 1;
     pointer-events: none;
 }
-
-/* Responsive Design */
-/* Removed responsive breakpoints - toggle maintains PC size on all devices */

@@ -104,6 +104,7 @@ export const Controls = ({ gameLogic, section = "top" }) => {
     };
 
     if (section === "top") {
+        const statusClass = `controls__message--${gameStatus}`;
         return (
             <div className="controls__ribbon-score controls__ribbon-score--top">
                 <div className="controls__ribbon-score-row">
@@ -113,12 +114,16 @@ export const Controls = ({ gameLogic, section = "top" }) => {
                             {formatNumber(animatedAmountPerWin)} {coinType}
                         </span>
                     </div>
-                    <div className="controls__ribbon-score-divider"></div>
                     <div className="controls__ribbon-score-item controls__ribbon-score-item--max">
                         <span className="controls__ribbon-score-label">Max Prize</span>
                         <span className={`controls__ribbon-score-value controls__value--${coinType === "GC" ? "gc" : "sc"}`}>
                             {formatNumber(maxPrize || 0)} {coinType}
                         </span>
+                    </div>
+                    <div className="controls__ribbon-score-item controls__ribbon-score-item--status">
+                        <div className="controls__status">
+                            <p className={`controls__message ${statusClass}`}>{getStatusMessage()}</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -126,11 +131,7 @@ export const Controls = ({ gameLogic, section = "top" }) => {
     }
 
     if (section === "status") {
-        return (
-            <div className="controls__status">
-                <p className="controls__message">{getStatusMessage()}</p>
-            </div>
-        );
+        return null;
     }
 
     if (section === "bottom") {
