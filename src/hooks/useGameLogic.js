@@ -1,7 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { simulateBoard } from "../api/simulateBoard";
 import { areAllSafeCellsRevealed, getSafeCellsRemaining } from "../utils/boardHelpers";
-import { addReward } from "../utils/scoreHelpers";
 
 /**
  * Main game logic hook
@@ -11,18 +10,24 @@ export const useGameLogic = () => {
     const [board, setBoard] = useState([]);
     const [revealedIds, setRevealedIds] = useState([]);
     const [score, setScore] = useState(0);
-    const [gameStatus, setGameStatus] = useState("loading"); // loading, ready, playing, won, lost, cashed_out
+    const [gameStatus, setGameStatus] = useState("loading");
     const [isLoading, setIsLoading] = useState(true);
     const [triggeredMineId, setTriggeredMineId] = useState(null);
     const [coinType, setCoinType] = useState("SC");
     const [amountPerWin, setAmountPerWin] = useState(0);
     const [pendingRewards, setPendingRewards] = useState([]);
 
+    const processedCardIds = useRef(new Set());
+
+    const safeCellsRemaining = getSafeCellsRemaining(board, revealedIds);
+    const totalMines = board.filter((cell) => cell.hasMine).length;
+
     const resetGameState = useCallback(() => {
         setRevealedIds([]);
         setScore(0);
         setTriggeredMineId(null);
         setPendingRewards([]);
+        processedCardIds.current.clear();
     }, []);
 
     const loadBoardData = useCallback(async () => {
@@ -32,7 +37,7 @@ export const useGameLogic = () => {
         return boardData;
     }, []);
 
-    const loadBoard = useCallback(async () => {
+    const initializeBoard = useCallback(async () => {
         setIsLoading(true);
         setGameStatus("loading");
         resetGameState();
@@ -49,55 +54,14 @@ export const useGameLogic = () => {
     }, [resetGameState, loadBoardData]);
 
     useEffect(() => {
-        loadBoard();
-    }, [loadBoard]);
+        initializeBoard();
+    }, [initializeBoard]);
 
     const startGame = useCallback(() => {
         if (gameStatus === "ready" || gameStatus === "cashed_out") {
             setGameStatus("playing");
         }
     }, [gameStatus]);
-
-    const flipCard = useCallback(
-        (cardId) => {
-            if (gameStatus !== "playing" || isLoading) {
-                return;
-            }
-
-            if (revealedIds.includes(cardId)) {
-                return;
-            }
-
-            const card = board.find((c) => c.id === cardId);
-            if (!card) {
-                return;
-            }
-
-            const newRevealedIds = [...revealedIds, cardId];
-            setRevealedIds(newRevealedIds);
-
-            if (card.hasMine) {
-                setTriggeredMineId(cardId);
-                setGameStatus("lost");
-                return;
-            }
-
-            // Track reward for animation
-            const currentReward = amountPerWin;
-            setPendingRewards((prev) => [...prev, { cardId, reward: currentReward }]);
-
-            setBoard((prevBoard) => prevBoard.map((c) => (c.id === cardId ? { ...c, reward: currentReward } : c)));
-
-            setAmountPerWin((prev) => prev * 2);
-
-            // Check if all safe cells are revealed (win condition)
-            if (areAllSafeCellsRevealed(board, newRevealedIds)) {
-                // console.warn("All safe cells are revealed");
-                setGameStatus("won");
-            }
-        },
-        [board, revealedIds, gameStatus, isLoading, amountPerWin]
-    );
 
     const cashOut = useCallback(() => {
         if (gameStatus === "playing") {
@@ -106,20 +70,20 @@ export const useGameLogic = () => {
     }, [gameStatus]);
 
     const restart = useCallback(async () => {
-        if (!isLoading) {
-            setIsLoading(true);
-            setGameStatus("loading");
-            resetGameState();
+        if (isLoading) return;
 
-            try {
-                await loadBoardData();
-                setGameStatus("playing");
-            } catch (error) {
-                console.error("Failed to load board:", error);
-                setGameStatus("error");
-            } finally {
-                setIsLoading(false);
-            }
+        setIsLoading(true);
+        setGameStatus("loading");
+        resetGameState();
+
+        try {
+            await loadBoardData();
+            setGameStatus("playing");
+        } catch (error) {
+            console.error("Failed to load board:", error);
+            setGameStatus("error");
+        } finally {
+            setIsLoading(false);
         }
     }, [isLoading, resetGameState, loadBoardData]);
 
@@ -133,20 +97,65 @@ export const useGameLogic = () => {
         [gameStatus]
     );
 
-    // console.warn("safeCellsRemaining", getSafeCellsRemaining(board, revealedIds));
-    const safeCellsRemaining = getSafeCellsRemaining(board, revealedIds);
+    const saveRewardAndDouble = useCallback((cardId) => {
+        setAmountPerWin((currentPrize) => {
+            const nextPrize = currentPrize * 2;
 
-    // console.warn("totalMines", board.filter((cell) => cell.hasMine).length);
-    const totalMines = board.filter((cell) => cell.hasMine).length;
+            setPendingRewards((prev) => {
+                const exists = prev.some((r) => r.cardId === cardId);
+                if (exists) return prev;
+                return [...prev, { cardId, reward: currentPrize }];
+            });
+
+            setBoard((prev) => prev.map((card) => (card.id === cardId ? { ...card, reward: currentPrize } : card)));
+
+            return nextPrize;
+        });
+    }, []);
+
+    const flipCard = useCallback(
+        (cardId) => {
+            if (gameStatus !== "playing" || isLoading) return;
+            if (revealedIds.includes(cardId)) return;
+
+            const card = board.find((c) => c.id === cardId);
+            if (!card) return;
+
+            setRevealedIds((prev) => [...prev, cardId]);
+
+            if (card.hasMine) {
+                setTriggeredMineId(cardId);
+                setGameStatus("lost");
+                return;
+            }
+
+            saveRewardAndDouble(cardId);
+
+            const newRevealedIds = [...revealedIds, cardId];
+            if (areAllSafeCellsRevealed(board, newRevealedIds)) {
+                setGameStatus("won");
+            }
+        },
+        [board, revealedIds, gameStatus, isLoading, saveRewardAndDouble]
+    );
 
     const completeRewardAnimation = useCallback((cardId) => {
+        // Prevent 2X dplication
+        if (processedCardIds.current.has(cardId)) {
+            setPendingRewards((prev) => prev.filter((r) => r.cardId !== cardId));
+            return;
+        }
+
         setPendingRewards((prev) => {
             const reward = prev.find((r) => r.cardId === cardId);
-            if (reward) {
-                setScore((currentScore) => addReward(currentScore, reward.reward));
-                return prev.filter((r) => r.cardId !== cardId);
+            if (!reward) return prev;
+
+            if (!processedCardIds.current.has(cardId)) {
+                processedCardIds.current.add(cardId);
+                setScore((currentScore) => currentScore + reward.reward);
             }
-            return prev;
+
+            return prev.filter((r) => r.cardId !== cardId);
         });
     }, []);
 
@@ -157,16 +166,16 @@ export const useGameLogic = () => {
         gameStatus,
         isLoading,
         triggeredMineId,
-        safeCellsRemaining,
-        totalMines,
         coinType,
         amountPerWin,
         pendingRewards,
-        completeRewardAnimation,
-        selectCoinType,
+        safeCellsRemaining,
+        totalMines,
         flipCard,
         cashOut,
         restart,
         startGame,
+        selectCoinType,
+        completeRewardAnimation,
     };
 };
