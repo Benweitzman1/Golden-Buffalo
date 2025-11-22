@@ -14,19 +14,24 @@ export const useBoardSize = () => {
                 const availableWidth = wrapper.clientWidth;
                 const availableHeight = wrapper.clientHeight;
                 const isPortrait = window.innerHeight > window.innerWidth;
-                const isDesktop = window.innerWidth >= 769;
+                const isDesktop = window.innerWidth >= 1024;
+                const isLargePhoneLandscape = !isDesktop && !isPortrait && window.innerWidth >= 700 && window.innerWidth < 1024 && window.innerHeight <= 600;
 
                 let percentage, maxBoardSize;
                 if (isDesktop) {
-                    percentage = 0.9;
-                    maxBoardSize = 700;
+                    percentage = 0.98;
+                    maxBoardSize = 1000;
+                } else if (isLargePhoneLandscape) {
+                    percentage = 0.85;
+                    maxBoardSize = 450;
                 } else {
                     percentage = isPortrait ? 0.9 : 0.8;
                     maxBoardSize = 450;
                 }
 
                 const maxSize = Math.min(availableWidth, availableHeight) * percentage;
-                const clampedSize = Math.min(maxBoardSize, Math.max(200, maxSize));
+                const minSize = isDesktop ? 600 : 200;
+                const clampedSize = Math.min(maxBoardSize, Math.max(minSize, maxSize));
                 setBoardSize(clampedSize);
             }
         };

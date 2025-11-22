@@ -29,6 +29,12 @@
     overflow: hidden;
 }
 
+@media (min-width: 1024px) {
+    .app-shell {
+        max-width: 1200px;
+    }
+}
+
 .app-header {
     text-align: center;
     color: white;
@@ -313,6 +319,12 @@
 
     .app-bottom-controls {
         gap: 0.375rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .app-game-container {
+        gap: 0.25rem;
     }
 }
 
