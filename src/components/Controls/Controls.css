@@ -111,12 +111,30 @@
     -webkit-backdrop-filter: blur(10px);
 }
 
+/* Row container for Next Prize and Max Prize */
+.controls__ribbon-score-row {
+    display: flex;
+    gap: clamp(1rem, 3vw, 2rem);
+    justify-content: space-around;
+    align-items: flex-start;
+}
+
+/* Individual prize item (Next Prize or Max Prize) */
+.controls__ribbon-score-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
+    min-width: 0;
+}
+
 .controls__ribbon-score-label {
     font-size: clamp(0.75rem, 2vw, 0.85rem);
     color: rgba(255, 255, 255, 0.7);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    white-space: nowrap;
 }
 
 .controls__ribbon-score-value {
@@ -125,6 +143,7 @@
     line-height: 1;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
     transition: all 0.3s ease;
+    white-space: nowrap;
 }
 
 .controls__stats span {

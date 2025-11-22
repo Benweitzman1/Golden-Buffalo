@@ -8,7 +8,7 @@ import "./Controls.css";
  * Displays score and game status information
  */
 export const Controls = ({ gameLogic, section = "top" }) => {
-    const { score, gameStatus, isLoading, safeCellsRemaining, totalMines, coinType, amountPerWin, selectCoinType, cashOut, restart, startGame, revealedIds } = gameLogic;
+    const { score, gameStatus, isLoading, safeCellsRemaining, totalMines, coinType, amountPerWin, maxPrize, selectCoinType, cashOut, restart, startGame, revealedIds } = gameLogic;
 
     const balance = gameStatus === "lost" ? 0 : score;
     const animatedBalance = useCounter(balance, 400);
@@ -120,10 +120,20 @@ export const Controls = ({ gameLogic, section = "top" }) => {
                 </div>
 
                 <div className="controls__ribbon-score controls__ribbon-score--top">
-                    <span className="controls__ribbon-score-label">Next Prize</span>
-                    <span className={`controls__ribbon-score-value controls__value--${coinType === "GC" ? "gc" : "sc"}`}>
-                        {animatedAmountPerWin} {coinType}
-                    </span>
+                    <div className="controls__ribbon-score-row">
+                        <div className="controls__ribbon-score-item">
+                            <span className="controls__ribbon-score-label">Next Prize</span>
+                            <span className={`controls__ribbon-score-value controls__value--${coinType === "GC" ? "gc" : "sc"}`}>
+                                {animatedAmountPerWin} {coinType}
+                            </span>
+                        </div>
+                        <div className="controls__ribbon-score-item">
+                            <span className="controls__ribbon-score-label">Max Prize</span>
+                            <span className={`controls__ribbon-score-value controls__value--${coinType === "GC" ? "gc" : "sc"}`}>
+                                {maxPrize || 0} {coinType}
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </>
         );

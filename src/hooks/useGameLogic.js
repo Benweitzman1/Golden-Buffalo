@@ -16,6 +16,7 @@ export const useGameLogic = () => {
     const [coinType, setCoinType] = useState("SC");
     const [amountPerWin, setAmountPerWin] = useState(0);
     const [pendingRewards, setPendingRewards] = useState([]);
+    const [maxPrize, setMaxPrize] = useState(0);
 
     const processedCardIds = useRef(new Set());
 
@@ -28,14 +29,27 @@ export const useGameLogic = () => {
         setTriggeredMineId(null);
         setPendingRewards([]);
         processedCardIds.current.clear();
+        // Note: maxPrize is NOT reset here - it's recalculated when board loads
+    }, []);
+
+    const calculateMaxPrize = useCallback((initialAmountPerWin, boardCells) => {
+        const numSafeCards = boardCells.filter((cell) => !cell.hasMine).length;
+        if (numSafeCards === 0) return 0;
+
+        const maxPrize = initialAmountPerWin * (Math.pow(2, numSafeCards) - 1);
+        return maxPrize;
     }, []);
 
     const loadBoardData = useCallback(async () => {
         const boardData = await simulateBoard();
         setBoard(boardData.cells);
         setAmountPerWin(boardData.amountPerWin);
+
+        const calculatedMaxPrize = calculateMaxPrize(boardData.amountPerWin, boardData.cells);
+        setMaxPrize(calculatedMaxPrize);
+
         return boardData;
-    }, []);
+    }, [calculateMaxPrize]);
 
     const initializeBoard = useCallback(async () => {
         setIsLoading(true);
@@ -168,6 +182,7 @@ export const useGameLogic = () => {
         triggeredMineId,
         coinType,
         amountPerWin,
+        maxPrize,
         pendingRewards,
         safeCellsRemaining,
         totalMines,
