@@ -138,23 +138,32 @@
 .controls__score {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 0.5rem;
     padding: clamp(0.75rem, 1.5vh, 1rem) clamp(1rem, 2vw, 1.5rem);
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, rgba(20, 20, 30, 0.95) 0%, rgba(30, 25, 40, 0.95) 100%);
     border-radius: 12px;
     color: white;
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .controls__label {
-    font-size: clamp(0.95rem, 2.5vw, 1.1rem);
-    font-weight: 500;
+    font-size: clamp(0.85rem, 2vw, 0.95rem);
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
 }
 
 .controls__value {
     font-size: clamp(1.5rem, 4vw, 2rem);
-    font-weight: bold;
+    font-weight: 700;
     transition: all 0.3s ease;
+    white-space: nowrap;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 .controls__value--sc {
@@ -173,19 +182,49 @@
     justify-content: space-around;
     align-items: center;
     font-size: clamp(0.85rem, 2.5vw, 0.95rem);
-    color: #666;
+    color: rgba(255, 255, 255, 0.9);
     padding: clamp(0.625rem, 1.25vh, 0.875rem) clamp(1rem, 2vw, 1.5rem);
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    background: linear-gradient(135deg, rgba(20, 20, 30, 0.95) 0%, rgba(30, 25, 40, 0.95) 100%);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-radius: 12px;
-    border: 1px solid rgba(229, 231, 235, 0.8);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 /* Hide ribbon left content on mobile */
 .controls__ribbon-left {
     display: none;
+}
+
+/* Ribbon Score - Top Section (swapped from bottom) */
+.controls__ribbon-score--top {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: clamp(0.75rem, 1.5vh, 1rem) clamp(1rem, 2vw, 1.5rem);
+    background: linear-gradient(135deg, rgba(20, 20, 30, 0.95) 0%, rgba(30, 25, 40, 0.95) 100%);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.controls__ribbon-score-label {
+    font-size: clamp(0.75rem, 2vw, 0.85rem);
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.controls__ribbon-score-value {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 700;
+    line-height: 1;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
 }
 
 .controls__stats span {
@@ -199,16 +238,17 @@
 
 .controls__message {
     font-size: clamp(0.85rem, 2.5vw, 1rem);
-    color: #333;
+    color: rgba(255, 255, 255, 0.95);
     margin: 0;
     padding: clamp(0.625rem, 1.25vh, 0.875rem) clamp(1rem, 2vw, 1.5rem);
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    background: linear-gradient(135deg, rgba(20, 20, 30, 0.95) 0%, rgba(30, 25, 40, 0.95) 100%);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-radius: 12px;
-    border: 1px solid rgba(229, 231, 235, 0.8);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
     line-height: 1.5;
+    font-weight: 500;
 }
 
 /* Hide status in bottom controls (shown above board) */
@@ -226,34 +266,52 @@
 .controls__btn {
     padding: clamp(0.75rem, 1.5vh, 1rem) clamp(1rem, 2vw, 1.5rem);
     font-size: clamp(0.9rem, 2.5vw, 1rem);
-    font-weight: 600;
-    border: none;
+    font-weight: 700;
+    border: 2px solid transparent;
     border-radius: 12px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
 }
 
 .controls__btn--cashout {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
     color: white;
+    border-color: rgba(16, 185, 129, 0.5);
 }
 
 .controls__btn--cashout:hover:not(:disabled) {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(245, 87, 108, 0.4);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    border-color: rgba(16, 185, 129, 0.8);
+}
+
+.controls__btn--cashout:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .controls__btn--restart {
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
     color: white;
+    border-color: rgba(245, 158, 11, 0.5);
 }
 
 .controls__btn--restart:hover:not(:disabled) {
+    background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(79, 172, 254, 0.4);
+    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    border-color: rgba(245, 158, 11, 0.8);
+}
+
+.controls__btn--restart:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .controls__btn:disabled {
@@ -269,6 +327,10 @@
 
 /* Portrait Mode - Smaller controls, larger board focus */
 @media (orientation: portrait) and (max-width: 768px) {
+    /* Ensure ribbon score is visible in portrait */
+    .controls__ribbon-score--top {
+        display: flex !important;
+    }
     .controls__coin-selector {
         padding: clamp(0.375rem, 0.75vh, 0.625rem) clamp(0.5rem, 1.25vw, 0.75rem);
         gap: clamp(0.25rem, 0.5vh, 0.375rem);
@@ -318,6 +380,39 @@
         padding: 0.125rem 0;
     }
 
+    /* Cash Out button wrapper for mobile balance display */
+    .controls__cashout-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    .controls__btn--cashout {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.125rem;
+        min-height: auto;
+    }
+
+    .controls__btn-text {
+        font-size: clamp(0.7rem, 1.6vw, 0.8rem);
+        line-height: 1;
+    }
+
+    .controls__btn-balance {
+        font-size: clamp(0.9rem, 2vw, 1rem);
+        font-weight: 700;
+        line-height: 1;
+        display: block;
+    }
+
+    .controls__balance-label {
+        display: none;
+    }
+
     .controls__btn {
         aspect-ratio: 2.5;
         padding: clamp(0.5rem, 1vh, 0.625rem);
@@ -361,6 +456,27 @@
 
 /* Desktop - Compact controls to free space for board */
 @media (min-width: 769px) {
+    /* Hide mobile balance label and restore normal button layout */
+    .controls__cashout-wrapper {
+        display: contents;
+    }
+
+    .controls__btn--cashout {
+        flex-direction: row;
+    }
+
+    .controls__btn-text {
+        display: block;
+    }
+
+    .controls__btn-balance {
+        display: none;
+    }
+
+    .controls__balance-label {
+        display: none;
+    }
+
     .controls__coin-selector {
         padding: 0.5rem 0.75rem;
         gap: 0.375rem;
@@ -443,24 +559,30 @@
         order: 1;
     }
 
-    /* Left side - Score/Coins */
-    .controls__ribbon-score {
+    /* Left side - Balance (swapped from top) */
+    .controls__score--ribbon {
         display: flex;
         flex-direction: column;
         gap: 0.25rem;
+        padding: 0;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
     }
 
-    .controls__ribbon-score-label {
+    .controls__score--ribbon .controls__label {
         font-size: 0.75rem;
         color: rgba(255, 255, 255, 0.7);
-        font-weight: 500;
+        font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
 
-    .controls__ribbon-score-value {
+    .controls__score--ribbon .controls__value {
         font-size: 1.5rem;
-        font-weight: bold;
+        font-weight: 700;
         line-height: 1;
     }
 
@@ -478,6 +600,8 @@
         font-size: 0.95rem;
         white-space: nowrap;
         min-width: 140px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
     }
 
     /* Right side - Stats */
@@ -515,6 +639,16 @@
 
 /* Mobile Portrait - Further reduced sizes */
 @media (orientation: portrait) and (max-width: 480px) {
+    /* Hide balance label on mobile portrait */
+    .controls__balance-label {
+        display: none;
+    }
+
+    /* Ensure balance is visible inside button on mobile portrait */
+    .controls__btn-balance {
+        display: block;
+    }
+
     .controls__coin-selector {
         padding: clamp(0.375rem, 0.75vh, 0.5rem) clamp(0.375rem, 1vw, 0.625rem);
         gap: clamp(0.25rem, 0.5vh, 0.375rem);
@@ -554,6 +688,16 @@
 
 /* iPhone SE Portrait - Minimal controls space */
 @media (max-width: 375px) and (orientation: portrait) {
+    /* Hide balance label on iPhone SE portrait */
+    .controls__balance-label {
+        display: none;
+    }
+
+    /* Ensure balance is visible inside button on iPhone SE portrait */
+    .controls__btn-balance {
+        display: block;
+    }
+
     .controls__coin-selector {
         padding: 0.375rem 0.5rem;
         gap: 0.25rem;
@@ -583,6 +727,15 @@
 
 /* Landscape Mode - Horizontal layout optimization */
 @media (orientation: landscape) and (max-height: 600px) {
+    /* Hide balance label on mobile landscape */
+    .controls__balance-label {
+        display: none;
+    }
+
+    /* Ensure balance is visible inside button on mobile landscape */
+    .controls__btn-balance {
+        display: block;
+    }
     /* Top controls (left side in landscape) */
     .app-top-controls {
         display: flex;
@@ -695,6 +848,16 @@
 
 /* iPhone SE Landscape - Additional constraints */
 @media (max-width: 667px) and (max-height: 375px) {
+    /* Hide balance label on iPhone SE landscape */
+    .controls__balance-label {
+        display: none;
+    }
+
+    /* Ensure balance is visible inside button on iPhone SE landscape */
+    .controls__btn-balance {
+        display: block;
+    }
+
     .controls__coin-selector {
         padding: clamp(0.375rem, 0.75vh, 0.5rem) clamp(0.375rem, 0.75vw, 0.5rem);
         gap: clamp(0.25rem, 0.5vh, 0.375rem);

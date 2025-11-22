@@ -54,10 +54,10 @@ export const Controls = ({ gameLogic, section = "top" }) => {
                     <Toggle value={coinType} onChange={selectCoinType} disabled={!canSelectCoin} coinCImage="/coinGC.png" coinSImage="/coinSC.png" />
                 </div>
 
-                <div className="controls__score">
-                    <span className="controls__label">Balance ({coinType}):</span>
-                    <span className={`controls__value controls__value--${coinType === "GC" ? "gc" : "sc"}`} data-score-target="true">
-                        ${animatedBalance}
+                <div className="controls__ribbon-score controls__ribbon-score--top">
+                    <span className="controls__ribbon-score-label">Next Prize</span>
+                    <span className={`controls__ribbon-score-value controls__value--${coinType === "GC" ? "gc" : "sc"}`}>
+                        {animatedAmountPerWin} {coinType}
                     </span>
                 </div>
             </>
@@ -85,17 +85,25 @@ export const Controls = ({ gameLogic, section = "top" }) => {
                 </div>
 
                 <div className="controls__actions">
-                    <button type="button" className="controls__btn controls__btn--cashout" onClick={cashOut} disabled={!canCashOut}>
-                        Cash Out
-                    </button>
+                    <div className="controls__cashout-wrapper">
+                        <button type="button" className="controls__btn controls__btn--cashout" onClick={cashOut} disabled={!canCashOut}>
+                            <span className="controls__btn-text">Cash Out</span>
+                            <span className={`controls__btn-balance controls__value--${coinType === "GC" ? "gc" : "sc"}`}>
+                                {animatedBalance} {coinType}
+                            </span>
+                        </button>
+                        <span className="controls__balance-label">Balance</span>
+                    </div>
                     <button type="button" className="controls__btn controls__btn--restart" onClick={restart} disabled={!canRestart}>
                         {gameStatus === "error" ? "Try Again" : "Restart"}
                     </button>
                 </div>
                 <div className="controls__ribbon-left">
-                    <div className="controls__ribbon-score">
-                        <span className="controls__ribbon-score-label">Next Prize</span>
-                        <span className={`controls__ribbon-score-value controls__value--${coinType === "GC" ? "gc" : "sc"}`}>${animatedAmountPerWin}</span>
+                    <div className="controls__score controls__score--ribbon">
+                        <span className="controls__label">Balance:</span>
+                        <span className={`controls__value controls__value--${coinType === "GC" ? "gc" : "sc"}`} data-score-target="true">
+                            {animatedBalance} {coinType}
+                        </span>
                     </div>
                 </div>
             </div>
