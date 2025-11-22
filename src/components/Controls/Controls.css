@@ -4,13 +4,12 @@
     align-items: center;
     padding: clamp(0.5rem, 1vh, 0.75rem) 0;
     position: relative;
-    min-height: 80px; /* Space for crown above toggle */
+    min-height: 80px;
 }
 
-/* Crown Wrapper - Positioned above selected coin */
 .controls__crown-wrapper {
     position: absolute;
-    top: 0;
+    top: 6px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 10;
@@ -19,7 +18,7 @@
 }
 
 .controls__crown-wrapper[data-coin-type="GC"] {
-    left: calc(50% - 50px + 32px);
+    left: calc(50% - 50px + 34px);
 }
 
 .controls__crown-wrapper[data-coin-type="SC"] {
@@ -27,14 +26,13 @@
 }
 
 .controls__crown-icon {
-    width: 32px;
-    height: 20px;
+    width: 21px;
+    height: 13px;
     object-fit: contain;
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
     pointer-events: none;
 }
 
-/* Score Display - Top Section */
 .controls__score {
     display: flex;
     align-items: center;
@@ -64,12 +62,10 @@
     transition: all 0.3s ease;
     white-space: nowrap;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-    /* Prevent overflow for large numbers */
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 100%;
     word-break: keep-all;
-    /* Ensure proper number display with comma formatting */
     font-variant-numeric: tabular-nums;
     letter-spacing: -0.02em;
 }
@@ -84,7 +80,6 @@
     text-shadow: 0 0 10px rgba(234, 179, 8, 0.5);
 }
 
-/* Stats - Bottom Section */
 .controls__stats {
     display: flex;
     justify-content: space-around;
@@ -100,12 +95,14 @@
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-/* Hide ribbon left content on mobile */
+.Removed unnesusery cscontrols__stats span {
+    font-weight: 600;
+}
+
 .controls__ribbon-left {
     display: none;
 }
 
-/* Ribbon Score - Top Section */
 .controls__ribbon-score--top {
     display: flex;
     flex-direction: column;
@@ -120,7 +117,6 @@
     overflow: hidden;
 }
 
-/* Subtle shine effect on ribbon */
 .controls__ribbon-score--top::before {
     content: "";
     position: absolute;
@@ -141,7 +137,6 @@
     }
 }
 
-/* Row container for Next Prize and Max Prize */
 .controls__ribbon-score-row {
     display: flex;
     align-items: center;
@@ -149,12 +144,10 @@
     gap: clamp(1.5rem, 4vw, 3rem);
     position: relative;
     z-index: 1;
-    /* Ensure row can expand for large numbers on desktop */
     min-width: 0;
     flex-wrap: nowrap;
 }
 
-/* Vertical divider between prizes */
 .controls__ribbon-score-divider {
     width: 1px;
     height: 60%;
@@ -163,7 +156,6 @@
     box-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
 }
 
-/* Individual prize item (Next Prize or Max Prize) */
 .controls__ribbon-score-item {
     display: flex;
     flex-direction: column;
@@ -178,7 +170,6 @@
     border-radius: 12px;
     border: 1px solid rgba(255, 215, 0, 0.15);
     transition: all 0.3s ease;
-    /* Prevent overflow - container will adapt to content */
     box-sizing: border-box;
     overflow: visible;
 }
@@ -206,22 +197,18 @@
     line-height: 1.1;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7), 0 0 16px currentColor;
     transition: all 0.3s ease;
-    /* Handle large numbers (up to 12 digits: 999,999,999,999) gracefully */
     white-space: nowrap;
     word-break: keep-all;
     letter-spacing: -0.02em;
     font-variant-numeric: tabular-nums;
-    /* Ensure currency type (GC/SC) always stays visible */
     display: inline-flex;
     align-items: baseline;
     gap: 0.25em;
     flex-wrap: nowrap;
-    /* Prevent overflow - let font size scale instead */
     min-width: 0;
     max-width: 100%;
 }
 
-/* Enhanced coin type colors with glow */
 .controls__ribbon-score-value.controls__value--sc {
     color: #10b981;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7), 0 0 20px rgba(16, 185, 129, 0.6), 0 0 40px rgba(16, 185, 129, 0.3);
@@ -232,205 +219,6 @@
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7), 0 0 20px rgba(234, 179, 8, 0.6), 0 0 40px rgba(234, 179, 8, 0.3);
 }
 
-/* Desktop-specific enhancements */
-@media (min-width: 1024px) {
-    .controls__ribbon-score--top {
-        padding: clamp(1.25rem, 2.5vh, 1.5rem) clamp(2rem, 5vw, 3rem);
-        border-radius: 20px;
-        box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6), inset 0 2px 0 rgba(255, 255, 255, 0.2), inset 0 -2px 0 rgba(0, 0, 0, 0.4);
-        border-width: 2px;
-        /* Allow overflow on desktop to show full numbers */
-        overflow: visible;
-    }
-
-    .controls__ribbon-score-row {
-        gap: clamp(2rem, 5vw, 4rem);
-        /* Allow row to expand for large numbers */
-        flex-wrap: nowrap;
-    }
-
-    .controls__ribbon-score-item {
-        padding: clamp(0.75rem, 2vh, 1rem) clamp(1.25rem, 3vw, 2rem);
-        border-radius: 16px;
-        /* Allow item to grow to accommodate large numbers */
-        min-width: 0;
-        flex: 1 1 auto;
-        overflow: visible;
-        /* Ensure container can expand for very large numbers */
-        max-width: none;
-    }
-
-    .controls__ribbon-score-label {
-        font-size: clamp(0.85rem, 1.5vw, 1rem);
-        letter-spacing: 1px;
-    }
-
-    .controls__ribbon-score-value {
-        /* Dynamic font sizing: start larger, but scale down for very large numbers */
-        /* Min size smaller to accommodate very large numbers (up to 12 digits with commas) */
-        font-size: clamp(0.75rem, 2vw, 2.5rem);
-        /* Always show full number on desktop - no truncation */
-        overflow: visible;
-        text-overflow: clip;
-        white-space: nowrap;
-        max-width: none;
-        /* Allow value to expand to fit full number + currency */
-        width: auto;
-        min-width: fit-content;
-        /* Ensure currency type is always visible */
-        word-break: keep-all;
-        /* Use inline-flex to keep number and currency together */
-        display: inline-flex;
-        align-items: baseline;
-        gap: 0.25em;
-        flex-wrap: nowrap;
-    }
-
-    .controls__ribbon-score-divider {
-        height: 70%;
-        min-height: 50px;
-        flex-shrink: 0;
-    }
-}
-
-/* Mobile portrait optimizations */
-@media (max-width: 768px) and (orientation: portrait) {
-    .controls__ribbon-score--top {
-        padding: clamp(0.875rem, 2vh, 1rem) clamp(1rem, 3vw, 1.5rem);
-        border-radius: 14px;
-    }
-
-    .controls__ribbon-score-row {
-        gap: clamp(1rem, 4vw, 1.75rem);
-    }
-
-    .controls__ribbon-score-item {
-        padding: clamp(0.5rem, 1.5vh, 0.625rem) clamp(0.625rem, 2vw, 1rem);
-        border-radius: 10px;
-    }
-
-    .controls__ribbon-score-label {
-        font-size: clamp(0.65rem, 2vw, 0.8rem);
-    }
-
-    .controls__ribbon-score-value {
-        font-size: clamp(0.85rem, 3.5vw, 1.75rem);
-        letter-spacing: -0.02em;
-        /* Ensure large numbers fit with currency type visible on mobile portrait */
-        max-width: 100%;
-        overflow: visible;
-        white-space: nowrap;
-        word-break: keep-all;
-        /* Ensure currency type stays visible */
-        display: inline-flex;
-        align-items: baseline;
-        gap: 0.25em;
-    }
-
-    .controls__ribbon-score-divider {
-        height: 50%;
-        min-height: 35px;
-    }
-}
-
-/* Mobile landscape optimizations - Stack vertically */
-@media (max-width: 1023px) and (orientation: landscape) {
-    .controls__ribbon-score--top {
-        padding: clamp(0.75rem, 1.5vh, 0.875rem) clamp(0.5rem, 1.5vw, 1rem);
-        /* Ensure ribbon container prevents overflow in landscape */
-        overflow: hidden;
-        max-width: 100%;
-        box-sizing: border-box;
-    }
-
-    /* Stack prizes vertically in landscape mobile */
-    .controls__ribbon-score-row {
-        flex-direction: column;
-        gap: clamp(0.75rem, 2vh, 1rem);
-        align-items: stretch;
-        /* Ensure row prevents overflow */
-        overflow: hidden;
-        /* Moderate width - balanced between too narrow and too wide */
-        max-width: calc(100% + 0.5rem);
-        width: calc(100% + 0.5rem);
-        margin: 0 -0.25rem;
-        box-sizing: border-box;
-    }
-
-    /* Hide vertical divider in landscape mobile (stacked layout) */
-    .controls__ribbon-score-divider {
-        display: none;
-    }
-
-    /* Horizontal divider between stacked prizes */
-    .controls__ribbon-score-row::after {
-        content: "";
-        width: 80%;
-        height: 1px;
-        background: linear-gradient(to right, transparent, rgba(255, 215, 0, 0.4), rgba(255, 215, 0, 0.6), rgba(255, 215, 0, 0.4), transparent);
-        box-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
-        margin: clamp(0.25rem, 1vh, 0.5rem) auto;
-        display: block;
-    }
-
-    .controls__ribbon-score-item {
-        padding: clamp(0.5rem, 1.25vh, 0.625rem) clamp(0.75rem, 2vw, 1rem);
-        width: 100%;
-        flex: none;
-        /* Ensure large numbers fit without overflow */
-        overflow: hidden;
-        box-sizing: border-box;
-        /* Ensure container can constrain content */
-        min-width: 0;
-        max-width: 100%;
-        /* Center content horizontally in landscape mode */
-        align-items: center;
-        text-align: center;
-        justify-content: center;
-    }
-
-    .controls__ribbon-score-label {
-        font-size: clamp(0.7rem, 2vw, 0.85rem);
-        /* Ensure label is centered in landscape mode */
-        text-align: center;
-        width: 100%;
-    }
-
-    .controls__ribbon-score-value {
-        /* Aggressive dynamic font sizing for landscape mobile to handle very large numbers */
-        /* Minimum size reduced significantly to accommodate numbers like 2,000,000,000 with currency */
-        /* Formula: minimum size allows ~15 characters (2,000,000,000 GC) to fit in container */
-        font-size: clamp(0.55rem, 2vw, 1.5rem);
-        /* Ensure large numbers fit with currency type visible - prevent overflow */
-        max-width: 100%;
-        width: 100%;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: clip;
-        word-break: keep-all;
-        /* Ensure currency type stays visible */
-        display: inline-flex;
-        align-items: baseline;
-        gap: 0.2em;
-        flex-wrap: nowrap;
-        /* Use tighter letter spacing for large numbers */
-        letter-spacing: -0.04em;
-        /* Ensure value doesn't exceed container */
-        box-sizing: border-box;
-        /* Ensure proper sizing calculation */
-        min-width: 0;
-        /* Center numbers horizontally in landscape mode */
-        justify-content: center;
-        margin: 0 auto;
-        text-align: center;
-    }
-}
-
-.controls__stats span {
-    font-weight: 600;
-}
-
-/* Status Message - Bottom Section */
 .controls__status {
     text-align: center;
 }
@@ -450,12 +238,10 @@
     font-weight: 500;
 }
 
-/* Hide status in bottom controls (shown above board) */
 .controls__bottom-wrapper > .controls__status {
     display: none;
 }
 
-/* Action Buttons - Bottom Section */
 .controls__actions {
     display: flex;
     justify-content: center;
@@ -483,7 +269,6 @@
     max-width: 100%;
 }
 
-/* PLAY Button Styling */
 .controls__btn--play {
     background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
     color: white;
@@ -502,7 +287,6 @@
     box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-/* CASH OUT Button Styling */
 .controls__btn--cashout {
     background: linear-gradient(135deg, #10b981 0%, #059669 100%);
     color: white;
@@ -521,7 +305,42 @@
     box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-/* Transition Animations */
+.controls__btn--restart {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: white;
+    border-color: rgba(245, 158, 11, 0.5);
+}
+
+.controls__btn--restart:not(.controls__btn--transitioning) {
+    animation: sparkle 1.2s ease-in-out;
+}
+
+@keyframes sparkle {
+    0%,
+    100% {
+        box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+    25%,
+    75% {
+        box-shadow: 0 8px 30px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+    50% {
+        box-shadow: 0 10px 40px rgba(255, 215, 0, 1), 0 0 30px rgba(255, 215, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    }
+}
+
+.controls__btn--restart:hover:not(:disabled) {
+    background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    border-color: rgba(245, 158, 11, 0.8);
+}
+
+.controls__btn--restart:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
 .controls__btn--transitioning.controls__btn--play-to-cashout {
     animation: playToCashOut 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
@@ -598,43 +417,6 @@
     }
 }
 
-/* RESTART Button Styling */
-.controls__btn--restart {
-    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-    color: white;
-    border-color: rgba(245, 158, 11, 0.5);
-}
-
-.controls__btn--restart:not(.controls__btn--transitioning) {
-    animation: sparkle 1.2s ease-in-out;
-}
-
-@keyframes sparkle {
-    0%,
-    100% {
-        box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-    }
-    25%,
-    75% {
-        box-shadow: 0 8px 30px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.4);
-    }
-    50% {
-        box-shadow: 0 10px 40px rgba(255, 215, 0, 1), 0 0 30px rgba(255, 215, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.5);
-    }
-}
-
-.controls__btn--restart:hover:not(:disabled) {
-    background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-    border-color: rgba(245, 158, 11, 0.8);
-}
-
-.controls__btn--restart:active:not(:disabled) {
-    transform: translateY(0);
-    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-}
-
 .controls__btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
@@ -646,11 +428,91 @@
     transform: translateY(0);
 }
 
-/* Portrait Mode - Smaller controls, larger board focus */
-@media (orientation: portrait) and (max-width: 768px) {
-    /* Ensure ribbon score is visible in portrait */
+@media (min-width: 1024px) {
+    .controls__ribbon-score--top {
+        padding: clamp(1.25rem, 2.5vh, 1.5rem) clamp(2rem, 5vw, 3rem);
+        border-radius: 20px;
+        box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6), inset 0 2px 0 rgba(255, 255, 255, 0.2), inset 0 -2px 0 rgba(0, 0, 0, 0.4);
+        border-width: 2px;
+        overflow: visible;
+    }
+
+    .controls__ribbon-score-row {
+        gap: clamp(2rem, 5vw, 4rem);
+        flex-wrap: nowrap;
+    }
+
+    .controls__ribbon-score-item {
+        padding: clamp(0.75rem, 2vh, 1rem) clamp(1.25rem, 3vw, 2rem);
+        border-radius: 16px;
+        min-width: 0;
+        flex: 1 1 auto;
+        overflow: visible;
+        max-width: none;
+    }
+
+    .controls__ribbon-score-label {
+        font-size: clamp(0.85rem, 1.5vw, 1rem);
+        letter-spacing: 1px;
+    }
+
+    .controls__ribbon-score-value {
+        font-size: clamp(0.75rem, 2vw, 2.5rem);
+        overflow: visible;
+        text-overflow: clip;
+        white-space: nowrap;
+        max-width: none;
+        width: auto;
+        min-width: fit-content;
+        word-break: keep-all;
+        display: inline-flex;
+        align-items: baseline;
+        gap: 0.25em;
+        flex-wrap: nowrap;
+    }
+
+    .controls__ribbon-score-divider {
+        height: 70%;
+        min-height: 50px;
+        flex-shrink: 0;
+    }
+}
+
+@media (max-width: 768px) and (orientation: portrait) {
     .controls__ribbon-score--top {
         display: flex !important;
+        padding: clamp(0.875rem, 2vh, 1rem) clamp(1rem, 3vw, 1.5rem);
+        border-radius: 14px;
+    }
+
+    .controls__ribbon-score-row {
+        gap: clamp(1rem, 4vw, 1.75rem);
+    }
+
+    .controls__ribbon-score-item {
+        padding: clamp(0.5rem, 1.5vh, 0.625rem) clamp(0.625rem, 2vw, 1rem);
+        border-radius: 10px;
+    }
+
+    .controls__ribbon-score-label {
+        font-size: clamp(0.65rem, 2vw, 0.8rem);
+    }
+
+    .controls__ribbon-score-value {
+        font-size: clamp(0.85rem, 3.5vw, 1.75rem);
+        letter-spacing: -0.02em;
+        max-width: 100%;
+        overflow: visible;
+        white-space: nowrap;
+        word-break: keep-all;
+        display: inline-flex;
+        align-items: baseline;
+        gap: 0.25em;
+    }
+
+    .controls__ribbon-score-divider {
+        height: 50%;
+        min-height: 35px;
     }
 
     .controls__score {
@@ -675,7 +537,6 @@
         font-size: clamp(0.75rem, 1.8vw, 0.85rem);
     }
 
-    /* Actions wrapper on mobile */
     .controls__actions-wrapper {
         display: flex;
         align-items: center;
@@ -685,7 +546,6 @@
         width: 100%;
     }
 
-    /* Single centered button in portrait - enhanced visibility */
     .controls__actions {
         display: flex;
         justify-content: center;
@@ -693,28 +553,24 @@
         padding: 0.125rem 0;
     }
 
-    /* Toggle wrapper in actions wrapper on mobile */
     .controls__actions-wrapper .controls__toggle-wrapper {
         flex-shrink: 0;
-        min-width: 84px; /* Reduced by 30% from 120px */
+        min-width: 84px;
         width: auto;
     }
 
-    /* Ensure toggle container maintains proper size on mobile */
     .controls__actions-wrapper .controls__toggle-wrapper .toggle-container {
-        width: 84px; /* Reduced by 30% from 120px */
+        width: 84px;
         max-width: 84px;
         min-width: 84px;
     }
 
-    /* Ensure toggle switch maintains proper size on mobile */
     .controls__actions-wrapper .controls__toggle-wrapper .toggle-switch {
-        width: 70px; /* Reduced by 30% from 100px */
+        width: 70px;
         max-width: 70px;
         min-width: 70px;
     }
 
-    /* Cash Out button wrapper for mobile balance display */
     .controls__cashout-wrapper {
         display: flex;
         flex-direction: column;
@@ -741,7 +597,6 @@
         font-weight: 700;
         line-height: 1;
         display: block;
-        /* Prevent overflow for large numbers (up to 12 digits with commas) */
         overflow: hidden;
         text-overflow: ellipsis;
         max-width: 100%;
@@ -762,7 +617,6 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        /* Enhanced visual prominence */
         border: 2px solid rgba(255, 255, 255, 0.3);
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25), 0 2px 4px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2);
         font-weight: 700;
@@ -796,9 +650,80 @@
     }
 }
 
-/* Desktop - Compact controls to free space for board */
+@media (max-width: 1023px) and (orientation: landscape) {
+    .controls__ribbon-score--top {
+        padding: clamp(0.75rem, 1.5vh, 0.875rem) clamp(0.5rem, 1.5vw, 1rem);
+        overflow: hidden;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .controls__ribbon-score-row {
+        flex-direction: column;
+        gap: clamp(0.75rem, 2vh, 1rem);
+        align-items: stretch;
+        overflow: hidden;
+        max-width: calc(100% + 0.5rem);
+        width: calc(100% + 0.5rem);
+        margin: 0 -0.25rem;
+        box-sizing: border-box;
+    }
+
+    .controls__ribbon-score-divider {
+        display: none;
+    }
+
+    .controls__ribbon-score-row::after {
+        content: "";
+        width: 80%;
+        height: 1px;
+        background: linear-gradient(to right, transparent, rgba(255, 215, 0, 0.4), rgba(255, 215, 0, 0.6), rgba(255, 215, 0, 0.4), transparent);
+        box-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
+        margin: clamp(0.25rem, 1vh, 0.5rem) auto;
+        display: block;
+    }
+
+    .controls__ribbon-score-item {
+        padding: clamp(0.5rem, 1.25vh, 0.625rem) clamp(0.75rem, 2vw, 1rem);
+        width: 100%;
+        flex: none;
+        overflow: hidden;
+        box-sizing: border-box;
+        min-width: 0;
+        max-width: 100%;
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .controls__ribbon-score-label {
+        font-size: clamp(0.7rem, 2vw, 0.85rem);
+        text-align: center;
+        width: 100%;
+    }
+
+    .controls__ribbon-score-value {
+        font-size: clamp(0.55rem, 2vw, 1.5rem);
+        max-width: 100%;
+        width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: clip;
+        word-break: keep-all;
+        display: inline-flex;
+        align-items: baseline;
+        gap: 0.2em;
+        flex-wrap: nowrap;
+        letter-spacing: -0.04em;
+        box-sizing: border-box;
+        min-width: 0;
+        justify-content: center;
+        margin: 0 auto;
+        text-align: center;
+    }
+}
+
 @media (min-width: 769px) {
-    /* Hide mobile balance label and restore normal button layout */
     .controls__cashout-wrapper {
         display: contents;
     }
@@ -851,9 +776,7 @@
     }
 }
 
-/* Desktop - Ribbon layout for bottom controls (HUD-style bar) */
 @media (min-width: 1024px) {
-    /* Transform bottom wrapper into horizontal ribbon */
     .controls__bottom-wrapper {
         display: flex;
         align-items: center;
@@ -873,7 +796,6 @@
         border-radius: 0;
     }
 
-    /* Hide ribbon left content on mobile, show on desktop */
     .controls__ribbon-left {
         display: flex;
         align-items: center;
@@ -881,7 +803,6 @@
         order: 1;
     }
 
-    /* Left side - Balance (swapped from top) */
     .controls__score--ribbon {
         display: flex;
         flex-direction: column;
@@ -908,7 +829,6 @@
         line-height: 1;
     }
 
-    /* Center - Actions wrapper (toggle + buttons) */
     .controls__bottom-wrapper > .controls__actions-wrapper {
         flex: 0 0 auto;
         display: flex;
@@ -918,28 +838,24 @@
         order: 2;
     }
 
-    /* Toggle wrapper in actions wrapper on desktop */
     .controls__bottom-wrapper > .controls__actions-wrapper .controls__toggle-wrapper {
         flex-shrink: 0;
-        min-width: 84px; /* Reduced by 30% from 120px */
+        min-width: 84px;
         width: auto;
     }
 
-    /* Ensure toggle container maintains proper size on desktop */
     .controls__bottom-wrapper > .controls__actions-wrapper .controls__toggle-wrapper .toggle-container {
-        width: 84px; /* Reduced by 30% from 120px */
+        width: 84px;
         max-width: 84px;
         min-width: 84px;
     }
 
-    /* Ensure toggle switch maintains proper size on desktop */
     .controls__bottom-wrapper > .controls__actions-wrapper .controls__toggle-wrapper .toggle-switch {
-        width: 70px; /* Reduced by 30% from 100px */
+        width: 70px;
         max-width: 70px;
         min-width: 70px;
     }
 
-    /* Actions (buttons) in wrapper */
     .controls__actions-wrapper > .controls__actions {
         flex: 0 0 auto;
         display: flex;
@@ -956,7 +872,6 @@
         letter-spacing: 0.5px;
     }
 
-    /* Right side - Stats */
     .controls__bottom-wrapper > .controls__stats {
         flex: 1;
         display: flex;
@@ -983,20 +898,16 @@
         color: rgba(255, 255, 255, 0.9);
     }
 
-    /* Hide status message on desktop ribbon */
     .controls__bottom-wrapper > .controls__status {
         display: none;
     }
 }
 
-/* Mobile Portrait - Further reduced sizes */
 @media (orientation: portrait) and (max-width: 480px) {
-    /* Hide balance label on mobile portrait */
     .controls__balance-label {
         display: none;
     }
 
-    /* Ensure balance is visible inside button on mobile portrait */
     .controls__btn-balance {
         display: block;
     }
@@ -1027,14 +938,11 @@
     }
 }
 
-/* iPhone SE Portrait - Minimal controls space */
 @media (max-width: 375px) and (orientation: portrait) {
-    /* Hide balance label on iPhone SE portrait */
     .controls__balance-label {
         display: none;
     }
 
-    /* Ensure balance is visible inside button on iPhone SE portrait */
     .controls__btn-balance {
         display: block;
     }
@@ -1061,28 +969,13 @@
     }
 }
 
-/* Landscape Mode - Horizontal layout optimization */
 @media (orientation: landscape) and (max-height: 600px) {
-    /* Hide balance label on mobile landscape */
     .controls__balance-label {
         display: none;
     }
 
-    /* Ensure balance is visible inside button on mobile landscape */
     .controls__btn-balance {
         display: block;
-    }
-
-    /* Top controls (left side in landscape) */
-    .app-top-controls {
-        display: flex;
-        flex-direction: column;
-        gap: clamp(0.5rem, 1vh, 0.75rem);
-        overflow-y: auto;
-        overflow-x: hidden;
-        max-height: 100%;
-        width: 100%;
-        box-sizing: border-box;
     }
 
     .controls__score {
@@ -1098,18 +991,6 @@
 
     .controls__value {
         font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-    }
-
-    /* Bottom controls (right side in landscape) */
-    .app-bottom-controls {
-        display: flex;
-        flex-direction: column;
-        gap: clamp(0.5rem, 1vh, 0.75rem);
-        overflow-y: auto;
-        overflow-x: hidden;
-        max-height: 100%;
-        width: 100%;
-        box-sizing: border-box;
     }
 
     .controls__stats {
@@ -1147,14 +1028,11 @@
     }
 }
 
-/* iPhone SE Landscape - Additional constraints */
 @media (max-width: 667px) and (max-height: 375px) {
-    /* Hide balance label on iPhone SE landscape */
     .controls__balance-label {
         display: none;
     }
 
-    /* Ensure balance is visible inside button on iPhone SE landscape */
     .controls__btn-balance {
         display: block;
     }
