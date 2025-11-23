@@ -2,6 +2,10 @@
 
 A casino-style card-flipping game built with React. Reveal cards on a 3x3 grid to collect rewards while avoiding mines. Cash out safely or risk it all for the maximum prize!
 
+## 🎮 Live Demo
+
+Play the game: **[https://Benweitzman1.github.io/Golden-Buffalo/](https://Benweitzman1.github.io/Golden-Buffalo/)**
+
 ## Features
 
 -   **Card Flipping Gameplay**: Click cards to reveal rewards or mines on a 3x3 grid

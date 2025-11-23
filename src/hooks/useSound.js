@@ -5,7 +5,7 @@ export const useSound = () => {
 
     const playSound = (soundName, options = {}) => {
         const { volume = 1, loop = false } = options;
-        const filePath = `/sounds/${soundName}.ogg`;
+        const filePath = `${import.meta.env.BASE_URL}sounds/${soundName}.ogg`;
 
         if (audioRefs.current[soundName]) {
             audioRefs.current[soundName].pause();

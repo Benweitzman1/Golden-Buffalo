@@ -51,7 +51,7 @@ export const Card = ({ card, isRevealed, isTriggeredMine, onFlip, disabled, game
 
     const getCardContent = () => {
         if (isRevealed && card.hasMine) {
-            return <img src="/mine.png" alt="Mine" className="card__mine-image" />;
+            return <img src={`${import.meta.env.BASE_URL}mine.png`} alt="Mine" className="card__mine-image" />;
         }
         return null;
     };

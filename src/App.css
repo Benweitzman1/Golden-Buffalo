@@ -3,7 +3,7 @@
     width: 100vw;
     overflow: hidden;
     background-color: #667eea;
-    background-image: url("/bg.jpg");
+    background-image: var(--bg-url);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

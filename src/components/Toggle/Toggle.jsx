@@ -4,7 +4,7 @@ import "./Toggle.css";
 /**
  * Toggle Switch between coin types
  */
-export const Toggle = ({ value = "GC", onChange, disabled = false, coinCImage = "/coinGC.png", coinSImage = "/coinSC.png" }) => {
+export const Toggle = ({ value = "GC", onChange, disabled = false, coinCImage = `${import.meta.env.BASE_URL}coinGC.png`, coinSImage = `${import.meta.env.BASE_URL}coinSC.png` }) => {
     const { playSound } = useSound();
 
     const handleToggle = () => {

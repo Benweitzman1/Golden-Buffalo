@@ -160,7 +160,7 @@ export const Controls = ({ gameLogic, section = "top" }) => {
         return (
             <div className="controls__bottom-wrapper">
                 <div className="controls__stats">
-                    <img src="/buffalo.png" alt="Buffalo" className="controls__stats-icon" />
+                    <img src={`${import.meta.env.BASE_URL}buffalo.png`} alt="Buffalo" className="controls__stats-icon" />
                     <span>
                         {collectedPrizes}/{totalSafeCells}
                     </span>
@@ -174,7 +174,7 @@ export const Controls = ({ gameLogic, section = "top" }) => {
                     <div className="controls__toggle-wrapper">
                         <div className="controls__crown-wrapper" data-coin-type={coinType}>
                             <img
-                                src="/crown.png"
+                                src={`${import.meta.env.BASE_URL}crown.png`}
                                 alt="Crown"
                                 className="controls__crown-icon"
                                 onError={(e) => {
@@ -182,7 +182,7 @@ export const Controls = ({ gameLogic, section = "top" }) => {
                                 }}
                             />
                         </div>
-                        <Toggle value={coinType} onChange={selectCoinType} disabled={!canSelectCoin} coinCImage="/coinGC.png" coinSImage="/coinSC.png" />
+                        <Toggle value={coinType} onChange={selectCoinType} disabled={!canSelectCoin} coinCImage={`${import.meta.env.BASE_URL}coinGC.png`} coinSImage={`${import.meta.env.BASE_URL}coinSC.png`} />
                     </div>
                     <div className="controls__actions">
                         <div className="controls__cashout-wrapper">

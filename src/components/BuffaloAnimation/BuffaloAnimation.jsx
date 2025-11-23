@@ -67,7 +67,7 @@ export const BuffaloAnimation = ({ cardId, targetSelector, onComplete, delay = 1
                 "--delta-y": `${deltaY}px`,
             }}
         >
-            <img src="/buffalo.png" alt="Buffalo" className="buffalo-animation__image" />
+            <img src={`${import.meta.env.BASE_URL}buffalo.png`} alt="Buffalo" className="buffalo-animation__image" />
         </div>
     );
 };
