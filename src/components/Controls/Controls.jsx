@@ -16,7 +16,6 @@ export const Controls = ({ gameLogic, section = "top" }) => {
     const balance = gameStatus === "lost" ? 0 : score;
     const animatedBalance = useCounter(balance, 400);
     const animatedAmountPerWin = amountPerWin || 0;
-    // const animatedAmountPerWin = useCounter(amountPerWin || 0, 400);
 
     const getStatusMessage = () => {
         switch (gameStatus) {

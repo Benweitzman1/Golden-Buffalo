@@ -50,13 +50,10 @@ export const Card = ({ card, isRevealed, isTriggeredMine, onFlip, disabled, game
     };
 
     const getCardContent = () => {
-        if (!isRevealed) {
-            return;
-        }
-        if (card.hasMine) {
+        if (isRevealed && card.hasMine) {
             return <img src="/mine.png" alt="Mine" className="card__mine-image" />;
         }
-        return;
+        return null;
     };
 
     const getCardClassName = () => {
@@ -105,7 +102,6 @@ export const Card = ({ card, isRevealed, isTriggeredMine, onFlip, disabled, game
             data-card-id={card.id}
             style={isRevealed ? { pointerEvents: "none" } : {}}
         >
-            {/* <span className="card__content"></span> */}
             <span className="card__content">{getCardContent()}</span>
         </button>
     );

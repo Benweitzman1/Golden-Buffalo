@@ -7,7 +7,6 @@ export const useSound = () => {
         const { volume = 1, loop = false } = options;
         const filePath = `/sounds/${soundName}.ogg`;
 
-        // Stop existing sound if it's already playing
         if (audioRefs.current[soundName]) {
             audioRefs.current[soundName].pause();
             audioRefs.current[soundName] = null;
@@ -21,9 +20,7 @@ export const useSound = () => {
             audioRefs.current[soundName] = audio;
         }
 
-        audio.play().catch((err) => {
-            console.warn(`Failed to play ${soundName}:`, err);
-        });
+        audio.play();
 
         if (!loop && soundName !== "bg" && soundName !== "all_board_win") {
             audio.addEventListener("ended", () => {

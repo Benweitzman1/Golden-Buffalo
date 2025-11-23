@@ -3,7 +3,6 @@
  * Returns a board with at least one mine and reward amounts per safe cell
  */
 export const simulateBoard = async () => {
-    // Simulate api call
     await new Promise((resolve) => setTimeout(resolve, 500));
 
     const gridSize = 3;
