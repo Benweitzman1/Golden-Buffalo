@@ -40,12 +40,6 @@ npm run build
 npm run preview
 ```
 
-## Technology Stack
-
--   **React 19** - UI framework
--   **Vite** - Build tool and dev server
--   **CSS3** - Styling with animations and responsive design
-
 ## Project Structure
 
 ```
@@ -115,7 +109,3 @@ Example output:
 │  💰  │  💰  │  💰  │
 └─────────────────────┘
 ```
-
-## License
-
-This project is part of a take-home assignment.
