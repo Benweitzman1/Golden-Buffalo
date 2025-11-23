@@ -53,6 +53,13 @@ export const Controls = ({ gameLogic, section = "top" }) => {
     const prevButtonStateRef = useRef("");
     const [isTransitioning, setIsTransitioning] = useState(false);
     const [transitionClass, setTransitionClass] = useState("");
+    const lastCollectedPrizesRef = useRef(0);
+
+    useEffect(() => {
+        if (gameStatus === "ready" || gameStatus === "loading") {
+            lastCollectedPrizesRef.current = 0;
+        }
+    }, [gameStatus]);
 
     useEffect(() => {
         if (prevButtonStateRef.current === "") {
@@ -135,7 +142,17 @@ export const Controls = ({ gameLogic, section = "top" }) => {
     }
 
     if (section === "bottom") {
-        const collectedPrizes = totalSafeCells - safeCellsRemaining;
+        const collectedPrizes = (() => {
+            if (gameStatus === "playing") {
+                const current = totalSafeCells - safeCellsRemaining;
+                lastCollectedPrizesRef.current = current;
+                return current;
+            } else if (gameStatus === "lost" || gameStatus === "cashed_out") {
+                return lastCollectedPrizesRef.current;
+            } else {
+                return totalSafeCells - safeCellsRemaining;
+            }
+        })();
 
         return (
             <div className="controls__bottom-wrapper">
