@@ -5,7 +5,7 @@ import "./Card.css";
  * Card component that displays individual game cards
  * Handles flip animations and visual states
  */
-export const Card = ({ card, isRevealed, isTriggeredMine, onFlip, disabled, gameEndScenario }) => {
+export const Card = ({ card, isRevealed, isTriggeredMine, onFlip, disabled, gameEndScenario, isPlayerRevealed }) => {
     const [showBuffalo, setShowBuffalo] = useState(false);
     const [isDimmed, setIsDimmed] = useState(false);
     const [isWinCelebration, setIsWinCelebration] = useState(false);
@@ -20,6 +20,9 @@ export const Card = ({ card, isRevealed, isTriggeredMine, onFlip, disabled, game
                     setShowBuffalo(true);
                 }, 1200);
                 return () => clearTimeout(celebrationTimer);
+            } else if (gameEndScenario === "cashed_out" && isPlayerRevealed) {
+                setShowBuffalo(true);
+                setIsDimmed(false);
             } else {
                 setShowBuffalo(true);
                 const revertTimer = setTimeout(() => setShowBuffalo(false), 1000);
@@ -36,7 +39,7 @@ export const Card = ({ card, isRevealed, isTriggeredMine, onFlip, disabled, game
                 setIsWinCelebration(false);
             }
         }
-    }, [isRevealed, card.hasMine, gameEndScenario]);
+    }, [isRevealed, card.hasMine, gameEndScenario, isPlayerRevealed]);
     const handleClick = () => {
         if (!disabled && !isRevealed) {
             onFlip(card.id);
@@ -67,7 +70,7 @@ export const Card = ({ card, isRevealed, isTriggeredMine, onFlip, disabled, game
                 } else {
                     className += showBuffalo ? " card--safe" : " card--safe-reverted";
                 }
-                if (isDimmed && gameEndScenario !== "won") {
+                if (isDimmed && gameEndScenario !== "won" && !(gameEndScenario === "cashed_out" && isPlayerRevealed)) {
                     className += " card--dimmed";
                 }
             }
@@ -76,6 +79,9 @@ export const Card = ({ card, isRevealed, isTriggeredMine, onFlip, disabled, game
             }
             if (gameEndScenario) {
                 className += ` card--revealed-${gameEndScenario}`;
+            }
+            if (gameEndScenario === "cashed_out" && isPlayerRevealed && !card.hasMine) {
+                className += " card--player-revealed";
             }
         } else {
             className += " card--hidden";

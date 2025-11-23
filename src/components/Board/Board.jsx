@@ -2,7 +2,7 @@ import { Card } from "../Card/Card";
 import "./Board.css";
 
 export const Board = ({ gameLogic }) => {
-    const { board, revealedIds, triggeredMineId, gameStatus, isLoading, flipCard } = gameLogic;
+    const { board, revealedIds, triggeredMineId, gameStatus, isLoading, flipCard, playerRevealedIds } = gameLogic;
 
     const GRID_SIZE = 3;
 
@@ -60,6 +60,7 @@ export const Board = ({ gameLogic }) => {
                             onFlip={flipCard}
                             disabled={isDisabled}
                             gameEndScenario={gameEndScenario}
+                            isPlayerRevealed={playerRevealedIds.includes(cell.id)}
                         />
                     ))}
                 </div>
