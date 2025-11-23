@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { simulateBoard } from "../api/simulateBoard";
 import { areAllSafeCellsRevealed, getSafeCellsRemaining } from "../utils/boardHelpers";
+// import { logBoardLayout } from "../utils/debugBoard";
 import { useSound } from "./useSound";
 
 /**
@@ -34,7 +35,6 @@ export const useGameLogic = () => {
         setPendingRewards([]);
         setPlayerRevealedIds([]);
         processedCardIds.current.clear();
-        // Note: maxPrize is NOT reset here - it's recalculated when board loads
     }, []);
 
     const calculateMaxPrize = useCallback((initialAmountPerWin, boardCells) => {
@@ -52,6 +52,8 @@ export const useGameLogic = () => {
 
         const calculatedMaxPrize = calculateMaxPrize(boardData.amountPerWin, boardData.cells);
         setMaxPrize(calculatedMaxPrize);
+
+        // logBoardLayout(boardData.cells);
 
         return boardData;
     }, [calculateMaxPrize]);
