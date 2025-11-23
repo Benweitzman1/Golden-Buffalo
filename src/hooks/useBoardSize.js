@@ -13,6 +13,12 @@ export const useBoardSize = () => {
                 const wrapper = boardWrapperRef.current;
                 const availableWidth = wrapper.clientWidth;
                 const availableHeight = wrapper.clientHeight;
+
+                if (availableWidth === 0 || availableHeight === 0) {
+                    requestAnimationFrame(updateBoardSize);
+                    return;
+                }
+
                 const isPortrait = window.innerHeight > window.innerWidth;
                 const isDesktop = window.innerWidth >= 1024;
                 const isLargePhoneLandscape = !isDesktop && !isPortrait && window.innerWidth >= 700 && window.innerWidth < 1024 && window.innerHeight <= 600;
@@ -37,13 +43,31 @@ export const useBoardSize = () => {
 
                 const maxSize = Math.min(availableWidth, availableHeight) * percentage;
                 const isSmallPhone = window.innerWidth <= 375 && isPortrait;
-                const minSize = isDesktop ? 600 : isSmallPhone ? 240 : 200;
+
+                // Viewport-based minimum size fallback for landscape initial load
+                // Use larger minimums for landscape to prevent tiny boards
+                const isLandscape = !isPortrait && !isDesktop;
+                const viewportMinSize = isLandscape ? Math.max(300, Math.min(window.innerHeight * 0.4, window.innerWidth * 0.35)) : Math.min(250, window.innerHeight * 0.3, window.innerWidth * 0.3);
+
+                const minSize = isDesktop ? 600 : isSmallPhone ? 240 : Math.max(200, viewportMinSize);
                 const clampedSize = Math.min(maxBoardSize, Math.max(minSize, maxSize));
-                setBoardSize(clampedSize);
+
+                // Ensure board size is never 0 or invalid
+                if (clampedSize <= 0 || isNaN(clampedSize)) {
+                    const fallbackSize = isLandscape ? Math.max(300, Math.min(window.innerHeight * 0.4, window.innerWidth * 0.35)) : Math.max(200, viewportMinSize);
+                    setBoardSize(fallbackSize);
+                } else {
+                    setBoardSize(clampedSize);
+                }
             }
         };
 
-        const timeoutId = setTimeout(updateBoardSize, 0);
+        // Initial calculation with delay to ensure layout is ready
+        const timeoutId = setTimeout(() => {
+            requestAnimationFrame(() => {
+                requestAnimationFrame(updateBoardSize);
+            });
+        }, 100);
 
         const resizeObserver = new ResizeObserver(() => {
             requestAnimationFrame(updateBoardSize);
@@ -55,7 +79,9 @@ export const useBoardSize = () => {
 
         window.addEventListener("resize", updateBoardSize);
         window.addEventListener("orientationchange", () => {
-            setTimeout(updateBoardSize, 100);
+            setTimeout(() => {
+                requestAnimationFrame(updateBoardSize);
+            }, 150);
         });
 
         return () => {
