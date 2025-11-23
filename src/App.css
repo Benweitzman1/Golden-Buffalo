@@ -362,4 +362,20 @@
         gap: 0;
         width: 100%;
     }
+
+    .app-board-wrapper {
+        aspect-ratio: 1;
+        max-width: min(60vh, 600px);
+        width: 100%;
+        max-height: min(60vh, 600px);
+        margin: 0 auto;
+        background: linear-gradient(135deg, rgba(15, 15, 25, 0.4) 0%, rgba(25, 20, 35, 0.4) 100%);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        align-self: center;
+    }
+
+    .app-board-wrapper .board {
+        opacity: 1;
+    }
 }

@@ -72,6 +72,16 @@ export const useGameLogic = () => {
         initializeBoard();
     }, [initializeBoard]);
 
+    useEffect(() => {
+        if (gameStatus === "lost" || gameStatus === "cashed_out" || gameStatus === "won") {
+            const allCardIds = board.map((card) => card.id);
+            const unrevealedIds = allCardIds.filter((id) => !revealedIds.includes(id));
+            if (unrevealedIds.length > 0) {
+                setRevealedIds((prev) => [...prev, ...unrevealedIds]);
+            }
+        }
+    }, [gameStatus, board, revealedIds]);
+
     const startGame = useCallback(() => {
         if (gameStatus === "ready" || gameStatus === "cashed_out") {
             setGameStatus("playing");
