@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { simulateBoard } from "../api/simulateBoard";
 import { areAllSafeCellsRevealed, getSafeCellsRemaining } from "../utils/boardHelpers";
+import { useSound } from "./useSound";
 
 /**
  * Main game logic hook
@@ -17,8 +18,10 @@ export const useGameLogic = () => {
     const [amountPerWin, setAmountPerWin] = useState(0);
     const [pendingRewards, setPendingRewards] = useState([]);
     const [maxPrize, setMaxPrize] = useState(0);
+    const [playerRevealedIds, setPlayerRevealedIds] = useState([]);
 
     const processedCardIds = useRef(new Set());
+    const { playSound, stopSound } = useSound();
 
     const safeCellsRemaining = getSafeCellsRemaining(board, revealedIds);
     const totalMines = board.filter((cell) => cell.hasMine).length;
@@ -29,6 +32,7 @@ export const useGameLogic = () => {
         setScore(0);
         setTriggeredMineId(null);
         setPendingRewards([]);
+        setPlayerRevealedIds([]);
         processedCardIds.current.clear();
         // Note: maxPrize is NOT reset here - it's recalculated when board loads
     }, []);
@@ -84,19 +88,27 @@ export const useGameLogic = () => {
 
     const startGame = useCallback(() => {
         if (gameStatus === "ready" || gameStatus === "cashed_out") {
+            stopSound("bg");
+            playSound("start_button");
+            playSound("bg", { loop: true, volume: 0.5 });
             setGameStatus("playing");
         }
-    }, [gameStatus]);
+    }, [gameStatus, playSound, stopSound]);
 
     const cashOut = useCallback(() => {
         if (gameStatus === "playing") {
+            stopSound("bg");
+            playSound("cash_out_win");
+            setPlayerRevealedIds([...revealedIds]);
             setGameStatus("cashed_out");
         }
-    }, [gameStatus]);
+    }, [gameStatus, revealedIds, stopSound, playSound]);
 
     const restart = useCallback(async () => {
         if (isLoading) return;
 
+        stopSound("bg");
+        stopSound("all_board_win");
         setIsLoading(true);
         setGameStatus("loading");
         resetGameState();
@@ -110,7 +122,7 @@ export const useGameLogic = () => {
         } finally {
             setIsLoading(false);
         }
-    }, [isLoading, resetGameState, loadBoardData]);
+    }, [isLoading, resetGameState, loadBoardData, stopSound]);
 
     const selectCoinType = useCallback(
         (type) => {
@@ -150,18 +162,23 @@ export const useGameLogic = () => {
 
             if (card.hasMine) {
                 setTriggeredMineId(cardId);
+                stopSound("bg");
+                playSound("mine-explode");
                 setGameStatus("lost");
                 return;
             }
 
             saveRewardAndDouble(cardId);
+            playSound("win");
 
             const newRevealedIds = [...revealedIds, cardId];
             if (areAllSafeCellsRevealed(board, newRevealedIds)) {
+                stopSound("bg");
+                playSound("all_board_win");
                 setGameStatus("won");
             }
         },
-        [board, revealedIds, gameStatus, isLoading, saveRewardAndDouble]
+        [board, revealedIds, gameStatus, isLoading, saveRewardAndDouble, playSound, stopSound]
     );
 
     const completeRewardAnimation = useCallback((cardId) => {
@@ -198,6 +215,7 @@ export const useGameLogic = () => {
         safeCellsRemaining,
         totalMines,
         totalSafeCells,
+        playerRevealedIds,
         flipCard,
         cashOut,
         restart,

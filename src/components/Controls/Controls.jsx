@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useCounter } from "../../hooks/useCounter";
+import { useSound } from "../../hooks/useSound";
 import { formatNumber } from "../../utils/numberFormat";
 import { Toggle } from "../Toggle/Toggle";
 import "./Controls.css";
@@ -10,6 +11,7 @@ import "./Controls.css";
  */
 export const Controls = ({ gameLogic, section = "top" }) => {
     const { score, gameStatus, isLoading, safeCellsRemaining, totalMines, totalSafeCells, coinType, amountPerWin, maxPrize, selectCoinType, cashOut, restart, startGame, revealedIds } = gameLogic;
+    const { playSound } = useSound();
 
     const balance = gameStatus === "lost" ? 0 : score;
     const animatedBalance = useCounter(balance, 400);
@@ -95,8 +97,10 @@ export const Controls = ({ gameLogic, section = "top" }) => {
         if (buttonState === "play") {
             startGame();
         } else if (buttonState === "cashout") {
+            playSound("button_click");
             cashOut();
         } else if (buttonState === "restart") {
+            playSound("button_click");
             restart();
         }
     };

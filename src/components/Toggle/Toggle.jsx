@@ -1,11 +1,15 @@
+import { useSound } from "../../hooks/useSound";
 import "./Toggle.css";
 
 /**
  * Toggle Switch between coin types
  */
 export const Toggle = ({ value = "GC", onChange, disabled = false, coinCImage = "/coinGC.png", coinSImage = "/coinSC.png" }) => {
+    const { playSound } = useSound();
+
     const handleToggle = () => {
         if (disabled || !onChange) return;
+        playSound("button_click");
         onChange(value === "GC" ? "SC" : "GC");
     };
 

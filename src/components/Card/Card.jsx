@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSound } from "../../hooks/useSound";
 import "./Card.css";
 
 /**
@@ -9,6 +10,7 @@ export const Card = ({ card, isRevealed, isTriggeredMine, onFlip, disabled, game
     const [showBuffalo, setShowBuffalo] = useState(false);
     const [isDimmed, setIsDimmed] = useState(false);
     const [isWinCelebration, setIsWinCelebration] = useState(false);
+    const { playSound } = useSound();
 
     useEffect(() => {
         if (isRevealed && !card.hasMine) {
@@ -42,6 +44,7 @@ export const Card = ({ card, isRevealed, isTriggeredMine, onFlip, disabled, game
     }, [isRevealed, card.hasMine, gameEndScenario, isPlayerRevealed]);
     const handleClick = () => {
         if (!disabled && !isRevealed) {
+            playSound("card_flip");
             onFlip(card.id);
         }
     };
