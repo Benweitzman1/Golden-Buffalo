@@ -10,12 +10,12 @@ import "./Controls.css";
  * Displays score and game status information
  */
 export const Controls = ({ gameLogic, section = "top" }) => {
-    const { score, gameStatus, isLoading, safeCellsRemaining, totalMines, totalSafeCells, coinType, amountPerWin, maxPrize, selectCoinType, cashOut, restart, startGame, revealedIds } = gameLogic;
+    const { score, gameStatus, isLoading, safeCellsRemaining, totalSafeCells, coinType, amountPerWin, maxPrize, selectCoinType, cashOut, restart, startGame, revealedIds } = gameLogic;
     const { playSound } = useSound();
 
     const balance = gameStatus === "lost" ? 0 : score;
     const animatedBalance = useCounter(balance, 400);
-    const animatedAmountPerWin = amountPerWin || 0;
+    const animatedAmountPerWin = gameStatus === "won" ? 0 : amountPerWin || 0;
 
     const getStatusMessage = () => {
         switch (gameStatus) {
