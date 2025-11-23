@@ -193,7 +193,7 @@
 .card--revealed-cashed-out.card--player-revealed {
     opacity: 1 !important;
     filter: brightness(1.3) saturate(1.2) !important;
-    background-image: url("/card_buffalo.png") !important;
+    background-image: var(--card-buffalo-url) !important;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
