@@ -114,7 +114,7 @@ export const Controls = ({ gameLogic, section = "top" }) => {
                             {formatNumber(animatedAmountPerWin)} {coinType}
                         </span>
                     </div>
-                    <div className="controls__ribbon-score-item controls__ribbon-score-item--max">
+                    <div className="controls__ribbon-score-item controls__ribbon-score-item--max" data-max-prize-target="true">
                         <span className="controls__ribbon-score-label">Max Prize</span>
                         <span className={`controls__ribbon-score-value controls__value--${coinType === "GC" ? "gc" : "sc"}`}>
                             {formatNumber(maxPrize || 0)} {coinType}
@@ -192,7 +192,7 @@ export const Controls = ({ gameLogic, section = "top" }) => {
                 <div className="controls__ribbon-left">
                     <div className="controls__score controls__score--ribbon">
                         <span className="controls__label">Balance:</span>
-                        <span className={`controls__value controls__value--${coinType === "GC" ? "gc" : "sc"}`} data-score-target="true">
+                        <span className={`controls__value controls__value--${coinType === "GC" ? "gc" : "sc"}`} data-score-target="true" data-score-target-pc="true">
                             {formatNumber(animatedBalance)} {coinType}
                         </span>
                     </div>

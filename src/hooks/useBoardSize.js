@@ -25,12 +25,19 @@ export const useBoardSize = () => {
                     percentage = 0.85;
                     maxBoardSize = 450;
                 } else {
-                    percentage = isPortrait ? 0.9 : 0.8;
-                    maxBoardSize = 450;
+                    const isSmallPhone = window.innerWidth <= 375 && isPortrait;
+                    if (isSmallPhone) {
+                        percentage = 0.7;
+                        maxBoardSize = 280;
+                    } else {
+                        percentage = isPortrait ? 0.9 : 0.8;
+                        maxBoardSize = 450;
+                    }
                 }
 
                 const maxSize = Math.min(availableWidth, availableHeight) * percentage;
-                const minSize = isDesktop ? 600 : 200;
+                const isSmallPhone = window.innerWidth <= 375 && isPortrait;
+                const minSize = isDesktop ? 600 : isSmallPhone ? 240 : 200;
                 const clampedSize = Math.min(maxBoardSize, Math.max(minSize, maxSize));
                 setBoardSize(clampedSize);
             }

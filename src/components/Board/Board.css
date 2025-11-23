@@ -76,12 +76,14 @@
 
 @media (max-width: 375px) and (orientation: portrait) {
     .board {
-        gap: 0.5rem !important;
-        padding: 0.625rem !important;
+        gap: 0.25rem !important;
+        padding: 0.375rem !important;
+        width: min(280px, 80vw, 100%) !important;
+        height: min(280px, 80vw, 100%) !important;
     }
 
     .board__row {
-        gap: 0.5rem !important;
+        gap: 0.25rem !important;
     }
 }
 

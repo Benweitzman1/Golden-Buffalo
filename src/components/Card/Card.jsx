@@ -5,24 +5,38 @@ import "./Card.css";
  * Card component that displays individual game cards
  * Handles flip animations and visual states
  */
-export const Card = ({ card, isRevealed, isTriggeredMine, onFlip, disabled }) => {
+export const Card = ({ card, isRevealed, isTriggeredMine, onFlip, disabled, gameEndScenario }) => {
     const [showBuffalo, setShowBuffalo] = useState(false);
     const [isDimmed, setIsDimmed] = useState(false);
+    const [isWinCelebration, setIsWinCelebration] = useState(false);
 
     useEffect(() => {
         if (isRevealed && !card.hasMine) {
-            setShowBuffalo(true);
-            const revertTimer = setTimeout(() => setShowBuffalo(false), 1000);
-            const dimTimer = setTimeout(() => setIsDimmed(true), 1000);
-            return () => {
-                clearTimeout(revertTimer);
-                clearTimeout(dimTimer);
-            };
+            if (gameEndScenario === "won") {
+                setIsWinCelebration(true);
+                setIsDimmed(false);
+                setShowBuffalo(false);
+                const celebrationTimer = setTimeout(() => {
+                    setShowBuffalo(true);
+                }, 1200);
+                return () => clearTimeout(celebrationTimer);
+            } else {
+                setShowBuffalo(true);
+                const revertTimer = setTimeout(() => setShowBuffalo(false), 1000);
+                const dimTimer = setTimeout(() => setIsDimmed(true), 1000);
+                return () => {
+                    clearTimeout(revertTimer);
+                    clearTimeout(dimTimer);
+                };
+            }
         } else {
-            setShowBuffalo(false);
-            setIsDimmed(false);
+            if (gameEndScenario !== "won") {
+                setShowBuffalo(false);
+                setIsDimmed(false);
+                setIsWinCelebration(false);
+            }
         }
-    }, [isRevealed, card.hasMine]);
+    }, [isRevealed, card.hasMine, gameEndScenario]);
     const handleClick = () => {
         if (!disabled && !isRevealed) {
             onFlip(card.id);
@@ -34,7 +48,7 @@ export const Card = ({ card, isRevealed, isTriggeredMine, onFlip, disabled }) =>
             return;
         }
         if (card.hasMine) {
-            return "💣";
+            return <img src="/mine.png" alt="Mine" className="card__mine-image" />;
         }
         return;
     };
@@ -44,14 +58,24 @@ export const Card = ({ card, isRevealed, isTriggeredMine, onFlip, disabled }) =>
         if (isRevealed) {
             if (card.hasMine) {
                 className += " card--mine";
+                if (gameEndScenario === "won") {
+                    className += " card--mine-disappear";
+                }
             } else {
-                className += showBuffalo ? " card--safe" : " card--safe-reverted";
-                if (isDimmed) {
+                if (gameEndScenario === "won" && isWinCelebration) {
+                    className += showBuffalo ? " card--safe card--celebration" : " card--safe-reverted";
+                } else {
+                    className += showBuffalo ? " card--safe" : " card--safe-reverted";
+                }
+                if (isDimmed && gameEndScenario !== "won") {
                     className += " card--dimmed";
                 }
             }
             if (isTriggeredMine) {
                 className += " card--triggered";
+            }
+            if (gameEndScenario) {
+                className += ` card--revealed-${gameEndScenario}`;
             }
         } else {
             className += " card--hidden";

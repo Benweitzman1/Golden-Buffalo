@@ -8,6 +8,15 @@ export const Board = ({ gameLogic }) => {
 
     const isDisabled = isLoading || gameStatus !== "playing";
 
+    const getGameEndScenario = () => {
+        if (gameStatus === "lost") return "lost";
+        if (gameStatus === "cashed_out") return "cashed_out";
+        if (gameStatus === "won") return "won";
+        return null;
+    };
+
+    const gameEndScenario = getGameEndScenario();
+
     const gridLayout = [];
     for (let row = 0; row < GRID_SIZE; row++) {
         const rowCells = [];
@@ -43,7 +52,15 @@ export const Board = ({ gameLogic }) => {
             {gridLayout.map((row, rowIndex) => (
                 <div key={rowIndex} className="board__row">
                     {row.map((cell) => (
-                        <Card key={cell.id} card={cell} isRevealed={revealedIds.includes(cell.id)} isTriggeredMine={cell.id === triggeredMineId} onFlip={flipCard} disabled={isDisabled} />
+                        <Card
+                            key={cell.id}
+                            card={cell}
+                            isRevealed={revealedIds.includes(cell.id)}
+                            isTriggeredMine={cell.id === triggeredMineId}
+                            onFlip={flipCard}
+                            disabled={isDisabled}
+                            gameEndScenario={gameEndScenario}
+                        />
                     ))}
                 </div>
             ))}

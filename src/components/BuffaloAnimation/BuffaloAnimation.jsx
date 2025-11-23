@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./BuffaloAnimation.css";
 
-export const BuffaloAnimation = ({ cardId, targetSelector, onComplete }) => {
+export const BuffaloAnimation = ({ cardId, targetSelector, onComplete, delay = 1000 }) => {
     const [isAnimating, setIsAnimating] = useState(false);
     const [positions, setPositions] = useState(null);
 
@@ -10,7 +10,18 @@ export const BuffaloAnimation = ({ cardId, targetSelector, onComplete }) => {
 
         const delayTimer = setTimeout(() => {
             const cardElement = document.querySelector(`[data-card-id="${cardId}"]`);
-            const targetElement = document.querySelector(targetSelector);
+
+            let targetElement = null;
+            if (targetSelector === "[data-score-target='true']") {
+                const isPC = window.innerWidth >= 1024;
+                if (isPC) {
+                    targetElement = document.querySelector("[data-score-target-pc='true']") || document.querySelector(targetSelector);
+                } else {
+                    targetElement = document.querySelector(targetSelector);
+                }
+            } else {
+                targetElement = document.querySelector(targetSelector);
+            }
 
             if (!cardElement || !targetElement) return;
 
@@ -25,10 +36,10 @@ export const BuffaloAnimation = ({ cardId, targetSelector, onComplete }) => {
             });
 
             setIsAnimating(true);
-        }, 1000);
+        }, delay);
 
         return () => clearTimeout(delayTimer);
-    }, [cardId, targetSelector]);
+    }, [cardId, targetSelector, delay]);
 
     useEffect(() => {
         if (isAnimating && positions) {
